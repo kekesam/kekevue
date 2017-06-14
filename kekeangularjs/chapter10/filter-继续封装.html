@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs关于过滤器的认识</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:14px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="ClassController">
+			<h1>{{sum}}</h1>
+			<h2>{{stime}}</h2>
+			<h1>{{chapter}}</h1>
+			<h1>{{sizeFile}}</h1>
+			<h4>{{64564654|toSize}}</h4>
+			<h1>{{'abcd'|reverse}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			
+			//filter是原理其他：
+			//$filterProvider
+			//$filter("过滤器的名字")(内容,参数，参数)
+			var app = angular.module("myapp",[]);
+			
+			
+			app.service("$util",function($filter){
+				return {
+					csubstr:$filter("substring"),
+					date:$filter("date"),
+					filter:$filter("filter"),
+					orderBy:$filter("orderBy"),
+					number:$filter("number"),
+					money:$filter("currency"),
+					upper:$filter("uppercase"),
+					lower:$filter("lowercase"),
+					json:$filter("json"),
+					toSize:$filter("toSize"),
+					randomRange:function(start,end){
+						return Math.floor(Math.random()*(end-start+1))+start;
+					},
+					randomNum:function(num){
+						return Math.floor(Math.random()*(num+1));
+					},
+					randomColor:function(){
+						var r = Math.floor(Math.random()*256);
+						var g = Math.floor(Math.random()*256);
+						var b = Math.floor(Math.random()*256);
+						return "rgb("+r+","+g+","+b+")";
+					},
+					mix : function(target,source){
+						var arr = [];
+						var args = arr.slice.call(arguments);
+						
+						var i = 1;
+						if(args.length==1){
+							return target;
+						};
+					
+						while((source = args[i++])){
+							for(var key in source){
+								if(source.hasOwnProperty(key)){
+									target[key] = source[key];
+								}
+							}
+						}
+						return target;
+					},
+					toChar:function (num) {
+					    var AA = new Array("零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十");
+					    var BB = new Array("", "十", "百", "仟", "萬", "億", "点", "");
+					    var a = ("" + num).replace(/(^0*)/g, "").split("."),
+					    k = 0,
+					    re = "";
+					    for (var i = a[0].length - 1; i >= 0; i--) {
+					        switch (k) {
+					        case 0:
+					            re = BB[7] + re;
+					            break;
+					        case 4:
+					            if (!new RegExp("0{4}//d{" + (a[0].length - i - 1) + "}$").test(a[0])) re = BB[4] + re;
+					            break;
+					        case 8:
+					            re = BB[5] + re;
+					            BB[7] = BB[5];
+					            k = 0;
+					            break;
+					        }
+					        if (k % 4 == 2 && a[0].charAt(i + 2) != 0 && a[0].charAt(i + 1) == 0) re = AA[0] + re;
+					        if (a[0].charAt(i) != 0) re = AA[a[0].charAt(i)] + BB[k % 4] + re;
+					        k++;
+					    }
+					
+					    if (a.length > 1) // 加上小数部分(如果有小数部分)
+					    {
+					        re += BB[6];
+					        for (var i = 0; i < a[1].length; i++) re += AA[a[1].charAt(i)];
+					    }
+					    if (re == '一十') re = "十";
+					    if (re.match(/^一/) && re.length == 3) re = re.replace("一", "");
+					    return re;
+					},
+					
+					toTime:function(startTime) {
+						var startTimeMills = new Date(startTime).getTime();
+						var endTimeMills = new Date().getTime();
+						var diff = parseInt((endTimeMills - startTimeMills) / 1000);//秒
+						var day_diff = parseInt(Math.floor(diff / 86400));//天
+						var buffer = Array();
+						if (day_diff < 0) {
+							return "[error],时间越界...";
+						} else {
+							if (day_diff == 0 && diff < 60) {
+								if (diff <= 0)
+									diff = 1;
+								buffer.push(diff + "秒前");
+							} else if (day_diff == 0 && diff < 120) {
+								buffer.push("1 分钟前");
+							} else if (day_diff == 0 && diff < 3600) {
+								buffer.push(Math.round(Math.floor(diff / 60)) + "分钟前");
+							} else if (day_diff == 0 && diff < 7200) {
+								buffer.push("1小时前");
+							} else if (day_diff == 0 && diff < 86400) {
+								buffer.push(Math.round(Math.floor(diff / 3600)) + "小时前");
+							} else if (day_diff == 1) {
+								buffer.push("1天前");
+							} else if (day_diff < 7) {
+								buffer.push(day_diff + "天前");
+							} else if (day_diff < 30) {
+								buffer.push(Math.round(Math.floor(day_diff / 7)) + " 星期前");
+							} else if (day_diff >= 30 && day_diff <= 179) {
+								buffer.push(Math.round(Math.floor(day_diff / 30)) + "月前");
+							} else if (day_diff >= 180 && day_diff < 365) {
+								buffer.push("半年前");
+							} else if (day_diff >= 365) {
+								buffer.push(Math.round(Math.floor(day_diff / 30 / 12)) + "年前");
+							}
+						}
+						return buffer.toString();
+					}
+				};
+			});
+			
+			app.config(function($filterProvider){
+				
+				$filterProvider.register("toSize",function(){
+					return function(size){
+						var fsize = parseFloat(size, 2);
+						var fileSizeString;
+						if (fsize < 1024) {
+							fileSizeString = fsize.toFixed(2) + "B";
+						} else if (fsize < 1048576) {
+							fileSizeString = (fsize / 1024).toFixed(2) + "KB";
+						} else if (fsize < 1073741824) {
+							fileSizeString = (fsize / 1024 / 1024).toFixed(2) + "MB";
+						} else if (fsize < 1024 * 1024 * 1024) {
+							fileSizeString = (fsize / 1024 / 1024 / 1024).toFixed(2) + "GB";
+						} else {
+							fileSizeString = "0B";
+						}
+						return fileSizeString;
+					}
+				});
+				
+				
+			});
+		
+			app.controller("ClassController",function($scope,$util){
+				$scope.sum = $util.randomNum(1,5);
+				$scope.stime = $util.toTime("2017/04/01");
+				$scope.chapter = "第"+$util.toChar(488)+"章";//第十章
+				$scope.sizeFile = $util.toSize(4880055);//第十章
+			}).filter("substring",function(){//定义很的工具类
+				return function(data,sindex,eindex){
+					return data.substring(sindex,eindex);
+				}
+			}).filter("reverse",function(){
+				return function(data,params){
+					//return data.split("").reverse().join(params|"");
+					var arr = [];
+					for(var i=data.length;i>=0;i--){
+						arr.push(data[i]);
+					}
+					return arr.join(params||"");
+				};
+			});
+			
+		</script>
+	</body>
+</html>

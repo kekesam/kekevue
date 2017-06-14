@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>boostrap初始化angularjs</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body ng-controller="TestController">
+		{{username}}
+		<script type="text/javascript">
+			
+			angular.element(document).ready(function() {
+		         var app =  angular.module('myApp', []);
+		         
+		         
+		         app.config(function($controllerProvider){
+		         	$controllerProvider.register("TestController",["$scope",function($scope){
+		         		$scope.username = "keke";
+		         		$scope.datas = [1,2,3,4,5,6,7,8,9];
+		         		$scope.names = [
+		         			{name:"keke",age:[21,23,54]},
+		         			{name:"zhansan",age:[212,23,54]},
+		         		]
+		         	}]);
+		         });
+		         
+		         
+		         
+		      /*   app.controller("TestController",function($scope){
+		         		$scope.username = "keke";
+		         		$scope.datas = [1,2,3,4,5,6,7,8,9];
+		         		$scope.names = [
+		         			{name:"keke",age:[21,23,54]},
+		         			{name:"zhansan",age:[212,23,54]},
+		         		]
+		         });*/
+		       	
+		       	
+		       	var obj = {name:"keke"};
+		       	var fn = function(age,num,num2){
+		       		alert(this.name+"的年龄是："+age+"=="+num+"=="+num2);
+		       	};
+		      	/*var fn = angular.bind(obj,fn,30);
+		      	fn();*/
+		       	
+		       	
+		       Function.prototype.testBind = function(that){
+				    var _this = this,
+				        /*
+				        *由于参数的不确定性，统一用arguments来处理，这里的arguments只是一个类数组对象，有length属性
+				        *可以用数组的slice方法转化成标准格式数组，除了作用域对象that以外，
+				        *后面的所有参数都需要作为数组参数传递
+				        *Array.prototype.slice.apply(arguments,[1])/Array.prototype.slice.call(arguments,1)
+				        */
+				        slice = Array.prototype.slice,
+				        args = slice.apply(arguments,[1]);
+				    //返回函数    
+				    return function(){
+				        //apply绑定作用域，进行参数传递
+				        return _this.apply(that,args)
+				    }    
+				}
+		        
+		       var fn = fn.testBind(obj,20,89,829);
+		       fn();
+		       	
+		      
+		       	
+		       	
+		         
+		         angular.bootstrap(document, ['myApp']);
+		    });
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+			
+			ul li{float:left;padding:10px 0px;}
+			ul li.odd{background-color:red;color:#fff;}
+			ul li.even{background-color:green;color:#fff;}
+			ul li.bold{font-weight: 700;font-size:18px;}
+			ul li span{width:80px;float:left;padding:0 10px;text-align: center;}
+			ul li:hover{background:#ccc;}
+			ul li.on{background: #000;}
+		</style>
+	</head>
+	<body>
+		
+		
+		
+		<div ng-controller="ClassController">
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号</span>
+					<span ng-click="title='id';desc=!desc">ID</span>
+					<span ng-click="title='name';desc=!desc">姓名</span>
+					<span ng-click="title='sex';desc=!desc">性别</span>
+					<span ng-click="title='price';desc=!desc">价格</span>
+					<span >是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas |filter:'柯'" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.id}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"￥"}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+			
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号</span>
+					<span ng-click="title='id';desc=!desc">ID</span>
+					<span ng-click="title='name';desc=!desc">姓名</span>
+					<span ng-click="title='sex';desc=!desc">性别</span>
+					<span ng-click="title='price';desc=!desc">价格</span>
+					<span >是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas |filter:findPrice" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.id}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"￥"}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+		</div>
+		
+		<h1>{{"ccccc"|substring}}</h1>
+		<h1>{{"ccccc"|substring:0:1}}</h1>
+		<h1>{{"ccccc"|test}}</h1>
+		
+		
+		<script type="text/javascript">
+			/*
+			   自定义过滤器:angular.filter
+			 1:相关知识点：$filter,$filterProvider
+			 * */
+			var app = angular.module("myapp",[])
+			app.config(function($provide,$filterProvider){
+				//自定义方式一
+				$provide.value("value","MK");
+				$filterProvider.register("test",function(value){
+					return function(e,type){
+						return value+e;
+					};
+				});
+			}).controller("ClassController",function($scope){
+				$scope.datas = [
+					{id:1,name:"柯柯",sex:"男",price:122.69},
+					{id:2,name:"柯柯1",sex:"男",price:88.69},
+					{id:3,name:"柯柯2",sex:"女",price:12.69},
+					{id:4,name:"柯柯3",sex:"女",price:102.69},
+					{id:5,name:"柯柯4",sex:"男",price:120.69},
+					{id:6,name:"柯柯5",sex:"女",price:3312.69},
+					{id:7,name:"柯柯6",sex:"男",price:12.69}
+				];
+				
+				$scope.title = "price";
+				$scope.desc = 0;
+				$scope.clickeme = function(i){
+					$scope.focus = i;
+				};
+				
+				$scope.findPrice = function(data){
+					return data.price > 80 && data.price <120;
+				};
+				//自定义方式二
+			}).filter("substring",function($filter){
+				return function(data,sindex,eindex){
+					 //var originalText = 'hello';
+	  				 //var filteredText = $filter('uppercase')(originalText);
+	  				 //return filteredText;
+	  				 return data.substring(sindex,eindex);
+				};
+			});
+		</script>
+	</body>
+</html>

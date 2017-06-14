@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		<a ui-sref="cdetail({page:'detail',price:12.8,name:'Javascript面向对象'})">课程详情2</a>
+		<a ui-sref="cdetail({page:'page1',price:13.8,name:'Javas面向对象'})">page1</a>
+		<a ui-sref="cdetail({page:'page2',price:14.8,name:'Php面向对象'})">page2</a>
+		<a ui-sref="cdetail({page:'page3',price:15.8,name:'C++面向对象'})">page3</a>
+		<section ui-view></section>
+		<script type="text/javascript">
+			 //第一步引入：angular-ui-router.min.js
+			 //第二步： var myApp = angular.module("myApp", ["ui.router"]); 注入：ui.router的模块
+			 //第三步：定义视图存放的视图位置:<div ui-view></div>
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	//设定默认访问路径
+			 	$urlRouterProvider.when("","/home");
+			 	//如果用户访问不存在的路由指定的时候，调整制定otherwise的路由路径
+			 	$urlRouterProvider.otherwise("/about");
+			 	$stateProvider.state("cdetail",{
+			 		url:"/cdetail/{page}/:price/{name}",
+			 		templateProvider:function($timeout,$stateParams){
+			 			return $timeout(function(){
+			 				return "<h1>{{name}},{{price}}</h1>";
+			 			},3000);
+			 		},
+			 		controller:function($scope,$stateParams){
+			 			$scope.name = $stateParams.name;
+			 			$scope.price = $stateParams.price;
+			 		}
+			 	});
+			 });
+		</script>
+	</body>
+</html>

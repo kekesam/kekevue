@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+		</style>
+	</head>
+	<body ng-controller="ExampleController">
+		
+	
+		
+		<keke-link>当前的文本内容是：{{text}}</keke-link>
+		<script type="text/ng-template" id="tpl">
+			<div class="frame">
+				<input type="text" ng-model="text" ng-init="text=23"/>
+				<div ng-transclude  class="tip"></div>
+			</div>
+		</script>
+		
+		<script type="text/javascript">
+			angular.module("myapp",[]).controller("ExampleController",function($scope){
+			}).directive("kekeLink",function(){
+				return {
+					restrict:"EACM",//E:标签(element) A:属性(attribute) C:类别(class),M：注释 
+					//replace:true,//
+					transclude:true,
+					templateUrl:"tpl"
+				};
+			});
+		</script>
+		
+	</body>
+</html>

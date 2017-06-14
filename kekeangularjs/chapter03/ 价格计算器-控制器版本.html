@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-controller="PriceController">
+			<p>价格：<input type="text" ng-model="price"/></p>
+			<p>数量：<input type="text" ng-model="num"/></p>
+			<p>总价：{{total}}</p>
+			<button ng-click="ctotal()" >计算</button>
+		</div>
+		
+		
+		
+		<script type="text/javascript">
+			
+			function factory(name){
+				return angular.module(name,[]);
+			}
+			
+			
+			var app = factory("myapp");
+			
+			app.controller("PriceController",function($scope){
+				$scope.price = 1;
+				$scope.num = 1;
+				$scope.total = 0; 
+				$scope.ctotal = function(){
+					$scope.total = $scope.price * $scope.num;
+				};
+			});
+			
+			
+			
+			
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<script src="angular.min.js"></script>
+<script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-route.min.js"></script>
+</head>
+<body>
+	<a href="#!/">首页</a>
+	<a href="#!/book">书籍</a>
+	<a href="#!/book/1">书籍2</a>
+	<a href="#!/game">游戏</a>
+	<div ng-view></div> 
+<script> 
+	var app = angular.module('myApp',["ngRoute"]);
+	app.config(function($routeProvider){
+		
+		var students = [
+			{id:1,username:"柯柯",age:30,sex:"男"},
+			{id:2,username:"柯柯2",age:20,sex:"女"},
+			{id:3,username:"柯柯3",age:30,sex:"男"},
+			{id:4,username:"柯柯4",age:10,sex:"女"}
+		];
+		
+		$routeProvider
+		.when("/",{
+			controller:function($scope){
+				$scope.title = "我是首页";
+			},
+			templateUrl:"template/index.html"
+		})
+		.when("/book",{
+			controller:function($scope){
+				$scope.title = "我是书籍";
+			},
+			templateUrl:"template/book.html"
+		})
+		.when("/book/:id",{
+			controller:function($scope,$routeParams){
+				$scope.title = "我是书籍,参数ID是："+$routeParams.id;
+				for (var i = 0; i < students.length; i++) {
+					if(students[i].id == $routeParams.id){
+						$scope.student = students[i]; 
+						break;
+					}
+				}
+			},
+			templateUrl:"template/book.html"
+		})
+		.when("/game",{
+			controller:function($scope){
+				$scope.title = "我是游戏";
+			},
+			templateUrl:"template/game.html"
+		}).otherwise({
+			redirectTo:"/"
+		});
+	});
+</script>
+</body>
+</html>

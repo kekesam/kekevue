@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="course({type:'Course'})">联系我们</a>
+	<a ui-sref="course({type:'About'})">联系我们2</a>
+	<a ui-sref="course({type:'Index'})">联系我们3</a>
+    <section ui-view></section>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+		    $stateProvider.state('course', {
+		      url:"/course/{type}",
+			  //templateUrl: 'template/contacts.html',
+			  template:"<div>{{title}}</div>",
+			  controllerProvider: function($stateParams) {
+			      var ctrlName = $stateParams.type + "Controller";
+			      return ctrlName;
+			  }
+			});
+		}).controller("CourseController",function($scope){
+			$scope.title = "Javascript面向对象编程";
+		}).controller("AboutController",function($scope){
+			$scope.title = "aboute Javascript面向对象编程";
+		}).controller("IndexController",function($scope){
+			$scope.title = "Index Javascript面向对象编程";
+		});
+    </script>
+</body>
+<html>

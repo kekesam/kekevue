@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body >
+		<script type="text/javascript">
+			
+			/*Javascript面向对象 原型继承和寄生继承,单对象继承*/
+			
+			//继承：不用通过如何的努力和劳作就可以免费拥有一些所谓财务和特征。
+			//代码变得更加的精简和复用更高。
+			
+			function Person(name,age){
+				this.name = name;
+				this.age = age;
+				this.eat = function(){
+					console.log("eating....");
+				}
+			};
+			
+			Person.prototype.go = function(){
+				console.log("go.....");
+			};
+			
+			
+			var person = new Person();//person的属性和方法是来自两个部分：
+			//1：一个部分是来自构造函数(复制过来，对象自有属性 obj.hasOwnProperty("name"))，2：来自原型对象(_proto_)进行的原型映射
+			
+			
+			
+			function Children(){
+				
+				this.sleep = function(){
+					console.log("sleep...");
+				}
+				
+			};
+			
+			//原型继承---就不适合传递参数
+			Children.prototype = new Person("keke",20);
+			
+			var children = new Children();
+			console.log(children.name);
+			console.log(children.age);
+			children.eat();
+			children.sleep();
+			children.go();
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>  
+<html ng-app="myapp">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>前端研究</title>  
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>	
+</head>  
+<body>  
+    
+    
+    <nav>
+    	<a href="#!/">首页</a>
+    	<a href="#!/course">课程</a>
+    </nav>
+   <ng-view></ng-view>
+    <!--
+    	1:引入angular-route.min.js
+    	2:var app = angular.module("myapp",["ngRoute"]);注入ngRoute的模块
+    	3:app.config(function($routeProvider){.....})
+    	4： <div ng-view></div>或者<ng-view></ng-view>
+    -->
+    
+    <div ng-controller="CourseController">
+    	<a href="javascript:void(0);" ng-click="cdetail()">点我</a>
+    	<div ng-controller="CourseController2">
+    		{{kcourses}}
+    	</div>
+    </div>
+    
+    <script type="text/javascript">
+     	var app = angular.module("myapp",["ngRoute"]);
+     	
+     	app.config(function($routeProvider){
+     		$routeProvider.when("/",{
+     			controller:"IndexController",
+     			template:"<div class='index'>{{title}}</div>"
+     		}).when("/course",{
+     			controller:"CourseController",
+     			templateUrl:"template/course.html"
+     		}).when("/course/:cid",{
+     			controller:"CourseController2",
+     			templateUrl:"template/detail.html"
+     		}).otherwise({
+     			redirectTo:"/"
+     		})
+     	});
+     	
+     	//ui-router
+     	app.controller("IndexController",function($scope){
+     		$scope.title = "我是首页";
+     	});
+     	
+     	app.controller("CourseController",function($scope){
+			$scope.courses = [
+				{id:"1",name:"Java面向对象1",tname:"柯柯1"},
+				{id:"2",name:"Java面向对象2",tname:"柯柯2"},
+				{id:"3",name:"Java面向对象3",tname:"柯柯3"},
+				{id:"4",name:"Java面向对象4",tname:"柯柯4"},
+				{id:"5",name:"Java面向对象5",tname:"柯柯5"},
+				{id:"6",name:"Java面向对象6",tname:"柯柯6"}
+			];
+			$scope.cdetail = function(){
+				$scope.$broadcast("course_emit",$scope.courses);
+			};
+     	});
+     	
+     	app.controller("CourseController2",function($scope,$routeParams){
+			$scope.$on("course_emit",function(event,data){
+				$scope.kcourses = data;
+			});
+		});
+    </script>
+</body>  
+</html>  

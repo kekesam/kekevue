@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<!--不可见-->
+		<div>
+			<ng-highlight>111水电费水电费111111111111</ng-highlight>
+			<div id="box">水电费水电费</div>
+		</div>
+		
+		<script type="text/javascript">
+			var myApp=angular.module("exampleApp", [ "exampleApp.Services", "exampleApp.Directives"]);
+	        
+	        
+			myApp.constant("startTime", new Date().toLocaleString()); 
+	        myApp.config(function(startTime,$provide){
+	            console.log("3:Main module config: " + startTime);
+	        });
+	        
+	        myApp.run(function(startTime){
+	            console.log("4:Main module run: " + startTime);
+	        });
+	        
+	        angular.module("exampleApp.Directives", [])
+	            .directive("highlight", function($filter){
+	                var dayFilter = $filter("dayName");
+	                return function(scope, element, attrs){
+	                    if(dayFilter(scope.day) == attrs["highlight"]){
+	                        element.css("color", "red");
+	                    }
+	                }
+	        });
+	        
+	        var now = new Date();
+	        myApp.value("nowValue", now);
+	
+	        angular.module("exampleApp.Services", []).service("days", function(nowValue){
+                this.today=nowValue.getDay();
+                this.tomorrow=this.today + 1;
+            }).config(function(){
+                console.log("1:Services module config: (no time)");
+            }).run(function(startTime){
+                console.log("2:Services module run: " + startTime);
+            });
+		</script>
+	</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="TestController">
+			{{message}}
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.controller("TestController",function($scope,$timeout){
+				//$scope.message = "我是一个scope";
+				/*
+				setTimeout(function(){
+					$scope.message = "我是一个scope";
+					$scope.$digest();
+				},3000);*/
+				
+				/*$timeout(function(){
+					$scope.message = "我是一个scope";
+				},3000);*/
+				
+				
+				setTimeout(function(){
+					$scope.$apply(function(){
+						$scope.message = "我是一个scope";
+					});
+				},3000);
+			});
+			
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body ng-controller="ExampleController">
+		
+		
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+			
+			ul li{float:left;padding:5px 0px;}
+			ul li.odd{background-color:red;color:#fff;}
+			ul li.even{background-color:green;color:#fff;}
+			ul li.bold{font-weight: 700;font-size:18px;}
+			ul li span{width:80px;float:left;padding:0 10px;text-align: center;}
+			ul li:hover{background:#ccc;}
+			ul li.on{background: yellow;}
+		</style>
+		
+		<pre id="default-spacing">{{ {'name':'value'} | json }}</pre>
+		<pre id="custom-spacing">{{ {'name':'value'} | json:4 }}</pre>
+		
+		
+		<h1>{{88.898|number:1|currency:"￥"}}</h1>
+		<h1>{{88.898|currency:"￥":1}}</h1>
+		<h1>{{'sdf 234水电费水电费sdf sdf234SDF'|lowercase}}</h1>
+		<h1>{{'sdf 234水电费水电费sdf sdf234SDF'|uppercase}}</h1>
+		<h1>{{'sdf 234水电费水电费sdf sdf234SDF'|limitTo:10}}</h1>
+		<h1>{{'2017-12-12'|date:"yyyy年MM月dd日"}}</h1>
+		<h1>{{'2017/12/12'|date:"yyyy年MM月dd日"}}</h1>
+		<h1>{{now|date:"yyyy年MM月dd日  EEEE ww HH:mm"}}</h1>
+					
+		<div>
+		  <label>
+		     Limit {{numbers}} to:
+		     <input type="number" step="1" ng-model="numLimit">
+		  </label>
+		  <p>Output numbers: {{ numbers | limitTo:numLimit }}</p>
+		  <label>
+		     Limit {{letters}} to:
+		     <input type="number" step="1" ng-model="letterLimit">
+		  </label>
+		  <p>Output letters: {{ letters | limitTo:letterLimit }}</p>
+		  <label>
+		     Limit {{longNumber}} to:
+		     <input type="number" step="1" ng-model="longNumberLimit">
+		  </label>
+		  <p>Output long number: {{ longNumber | limitTo:longNumberLimit }}</p>
+		  <h1>{{now|date:"yyyy年MM月dd日"}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			angular.module("myapp",[]).controller("ExampleController",function($scope){
+				  $scope.numbers = [1,2,3,4,5,6,7,8,9];
+			      $scope.letters = "abcdefghi";
+			      $scope.longNumber = 2345432342;
+			      $scope.numLimit = 3;
+			      $scope.letterLimit = 3;
+			      $scope.longNumberLimit = 3;
+			      $scope.now = new Date();
+			});
+			
+
+		</script>
+	</body>
+</html>

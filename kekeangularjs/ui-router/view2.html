@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="report">联系我们</a>
+	<div ui-view></div>	
+	<div ui-view="detail2">课程详细22</div>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+			//将默认页设置为/home的URL。注意哦，这里用的是URL，别写错成state了。
+			$urlRouterProvider.when("","/report");
+			//当然也可以写一个任何额外页面的定向： 这样访问其他阿猫阿狗的页面，就都跑到/home那去了。
+			$urlRouterProvider.otherwise("/report");  
+		    $stateProvider.state('report', {
+		    	url:"/report",
+			    views: {
+			      '':{
+			      	templateUrl:"view/report.html"
+			      },
+			      'filters@report': {
+			      	template:"<h1>Hello Filters</h1>"
+			      },
+			      'tabledata@report': {
+			      	template:"<h1>Hello tabledata</h1>"
+			      },
+			      'graph@report': {
+			      	template:"<h1>Hello graph</h1>"
+			      },
+			    }		
+			 }).state("report.course",{
+			 	url:"/report/course",
+			 	views:{
+			 		"detail3" : {//写入到report.html的<div ui-view="detail3"></div>	
+			 			template:"<h1>我是课程详细页面33</h1>"
+			 		},
+			 		"":{//写入到report.html的<div ui-view></div>
+			 			template:"<h1>我是课程详细页面00</h1>"
+			 		},
+			 		"detail@report":{//写入到report.html的<div ui-view="detail"></div>	
+			 			template:"<h1>我是课程详细页面</h1>"
+			 		},
+			 		"info@report.course" : {
+			 			template:"<h1>INFO</h1>"
+			 		},
+			 		"@report":{//写入到report.html的<div ui-view></div>	
+			 			template:"<h1>我是课程详细页面2222</h1>"
+			 		},
+			 		"detail2@":{//写入到首页的<div ui-view="detail2"></div>	
+			 			template:"<h1>我是课程详细页面2</h1>"
+			 		}
+			 		//"@":{//写入到<div ui-view></div>	
+			 		//	template:"<h1>我是课程详细页面3</h1>"
+			 		//}
+			 	}
+			 });
+		});
+    </script>
+</body>
+<html>

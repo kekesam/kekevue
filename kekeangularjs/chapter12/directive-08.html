@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于指令-directive--重要属性-link</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		
+		<style type="text/css">
+			*{padding:0;margin:0;}
+			body{padding:100px;}
+			.mk_diretive_banner{background:red;overflow: hidden;}
+			.search{background:#ccc;border:1px solid #eee;width:260px;margin:10px 0;}
+			.search input{border:0 ;height:26px;line-height: 26px;width:200px;outline:none;text-indent: 0.5em;}
+			.search button{height:26px;width:60px;border:0;}
+		</style>
+		
+		
+	</head>
+	<body>
+		
+		
+		
+		<!--指令-->
+		<keke-a name="柯柯" age="30">
+			<h1>我爱你{{text}}</h1>
+			<keke-b name="小艾">
+				<h1>它爱你{{text}}</h1>
+			</keke-b>
+		</keke-a><!-- E -->
+		
+		<!--模板-->
+		<script type="text/ng-template" id="tpl">
+			<div class="mk_diretive_banner">
+				<div class='search'><p><input /><button>搜索</button></p></div>
+				<div ng-transclude></div>
+			</div>
+		</script>
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",[]);
+			app.directive("kekeA",function(){
+				return {
+					restrict:"ECA",//定义指令的类型  E --element C:class
+					templateUrl:"tpl",
+					transclude:true,/*transclude:是boolean,默认也是false,如果为true,那么在模板中可以通过ng-transclude方法替换指令元素中的内容*/
+					scope:true,//scope：true代表，每个指令的作用域会进行隔离.默认是false
+					compile:function(element,attrdom,trans){
+						console.log("正在执行A指令")
+						return {
+							pre:function($scope,element,attrDom){
+								console.log("正在执行A指令--pre");
+							},
+							post:function($scope,element,attrDom){
+								$scope.text = attrDom.name;
+								console.log("正在执行A指令--post");
+							}
+						}
+					}
+				};
+			}).directive("kekeB",function(){
+				return {
+					restrict:"ECA",//定义指令的类型  E --element C:class
+					templateUrl:"tpl",
+					replace:true,/*replace是boolean类型，默认是false,代表template模板是否替换宿主标签*/
+					transclude:true,/*transclude:是boolean,默认也是false,如果为true,那么在模板中可以通过ng-transclude方法替换指令元素中的内容*/
+					scope:true,//scope：true代表，每个指令的作用域会进行隔离.默认是false
+					compile:function(element,attrdom,trans){
+						console.log("正在执行B指令")
+						return {
+							pre:function($scope,element,attrDom){
+								$scope.text = attrDom.name;
+								console.log("正在执行B指令--pre");
+							},
+							post:function($scope,element,attrDom){
+								console.log("正在执行B指令--post");
+							}
+						}
+					}
+				};
+			});
+			
+			//重点3：在指令中，如果你要监听指令的开始，结束那么就可以定义complie方法，它监听指令的开始和结束
+			//如果用了complie就不能使用link
+			
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="UTF-8">  
+    <title>前端研究</title>  
+</head>  
+<body>  
+    
+    <!--<p>请选择颜色：<input type="text" id="color" /><button onclick="cchange(this)">请改变</button></p>-->
+    <form>
+    	<p>请选择颜色：<input type="text" name="color" id="color" onkeyup="cchange(form)"/>
+    </form>
+    <script type="text/javascript">
+     	function cchange(form){
+     		document.body.style.background = form.color.value;
+     	}
+    </script>
+</body>  
+</html>  

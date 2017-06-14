@@ -1,0 +1,77 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="UTF-8">  
+    <title>前端研究</title>  
+    <script type="text/javascript" src="../bower_components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/resource.js">
+    	
+    </script>
+</head>  
+<body>  
+    <div class="container">  
+        <h1 class="text-center text-danger">Angular 地址联动示例</h1>  
+  
+        <div class="form-horizontal">  
+            <div class="form-group">  
+                <label class="col-md-2 control-label">  
+                    地址  
+                </label>  
+                <div class="col-md-10">  
+                    <select id="province"  onchange="getCity(this)" class="form-control"><option value="">省</option></select>  
+                    <select id="city" onchange="getArea(this)" class="form-control"><option  value="">市</option></select>  
+                    <select id="area" class="form-control"><option  value="">区</option></select>  
+                </div>  
+            </div>  
+        </div>  
+    </div> 
+    
+    <script type="text/javascript">
+		function getProvinecs(){
+			var html = "";
+			for (var i = 0; i < division.length; i++) {
+				if(division[i].level==1){
+					html+="<option sheng='"+division[i].sheng+"' value='"+division[i].code+"'>"+division[i].name+"</option>";
+				}
+			}
+			$("#province").append(html);
+		};
+		
+		function getCity(obj){
+			/*	var selectIndex = obj.selectedIndex;
+			var optionDom = obj.options[selectIndex];
+			var sheng = optionDom.getAttribute("sheng");
+			var value = optionDom.value;
+			var text = optionDom.text;
+			alert(value+"==="+text);*/
+			var sheng = $(obj).find("option:selected").attr("sheng");
+			var html = "";
+			$("#city").html("<option value=''>市</option>");
+			$("#area").html("<option value=''>区</option>");
+			for (var i = 0; i < division.length; i++) {
+				if(division[i].level==2 && division[i].sheng ==sheng){
+					html+="<option di='"+division[i].di+"' sheng='"+division[i].sheng+"' value='"+division[i].code+"'>"+division[i].name+"</option>";
+				}
+			}
+			$("#city").append(html);
+		};
+		
+		function getArea(obj){
+			var sheng = $("#province").find("option:selected").attr("sheng");
+			var di = $(obj).find("option:selected").attr("di");
+			var html = "";
+			$("#area").html("<option value=''>区</option>")
+			for (var i = 0; i < division.length; i++) {
+				if(division[i].level==3 && division[i].sheng ==sheng && division[i].di ==di){
+					html+="<option di='"+division[i].di+"' sheng='"+division[i].sheng+"' value='"+division[i].code+"'>"+division[i].name+"</option>";
+				}
+			}
+			$("#area").append(html);
+		};
+		
+		$(function(){
+			getProvinecs();
+		});
+   </script>
+</body>  
+</html>  

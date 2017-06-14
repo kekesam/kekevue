@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+			
+			ul li{float:left;padding:5px 0px;}
+			ul li.odd{background-color:red;color:#fff;}
+			ul li.even{background-color:green;color:#fff;}
+			ul li.bold{font-weight: 700;font-size:18px;}
+			ul li span{width:80px;float:left;padding:0 10px;text-align: center;}
+			ul li:hover{background:#ccc;}
+			ul li.on{background: yellow;}
+		</style>
+	</head>
+	<body>
+		
+		
+		
+		<pre id="default-spacing">{{ {'name':'value'} | json }}</pre>
+		<pre id="custom-spacing">{{ {'name':'value'} | json:4 }}</pre>
+		
+		<div ng-controller="ClassController">
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号</span>
+					<span>姓名</span>
+					<span>性别</span>
+					<span>价格</span>
+					<span>是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas | orderBy:'price':false" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"USD$":1}}</span>
+					<span>{{stu.price | currency:"￥":1}}</span>
+					<span>{{stu.price | currency:"￥"}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script type="text/javascript">
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.datas = [
+					{name:"柯柯",sex:"男",price:122.69},
+					{name:"柯柯1",sex:"男",price:12.69},
+					{name:"柯柯2",sex:"女",price:12.69},
+					{name:"柯柯3",sex:"女",price:12.69},
+					{name:"柯柯4",sex:"男",price:12.69},
+					{name:"柯柯5",sex:"女",price:3312.69},
+					{name:"柯柯6",sex:"男",price:12.69}
+				];
+				
+				$scope.clickeme = function(i){
+					$scope.focus = i;
+				};
+			});
+		</script>
+	</body>
+</html>

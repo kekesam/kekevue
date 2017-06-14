@@ -1,0 +1,90 @@
+<!doctype html>  
+<html ng-app="routerApp">  
+<head>  
+    <meta charset="utf-8">  
+    <link rel="stylesheet" href="../js/bootstrap.min.css">  
+    <script src="../js/angular.min.js"></script>  
+    <script src="../js/angular-animate.min.js"></script>  
+    <script src="../js/angular-ui-router.js"></script>  
+</head>  
+<body>  
+	
+    <nav class="navbar navbar-inverse" role="navigation">  
+        <div class="navbar-header">  
+            <a class="navbar-brand" ui-sref="#">AngularUI Router</a>  
+        </div>  
+        <ul class="nav navbar-nav">  
+            <li>  
+                <a ui-sref="home">Home</a>  
+            </li>  
+            <li>  
+                <a ui-sref="about">About</a>  
+            </li>  
+        </ul>  
+    </nav>  
+    
+    <div class="container">  
+        <div ui-view=""></div>  
+    </div>  
+    
+    <script type="text/javascript">
+    	var routerApp = angular.module('routerApp', ['ui.router']);  
+		routerApp.config(function($stateProvider, $urlRouterProvider) {  
+		    /*路由重定向 $urlRouterProvider:如果没有路由引擎能匹配当前的导航状态，那它就会默认将路径路由至 home.html,  
+		     *这个页面就是状态名称被声明的地方. */  
+		    $urlRouterProvider.otherwise('/home');  
+		    $stateProvider  
+	        .state('home', {  
+	            url: '/home',  
+	            templateUrl: 'home.html'  
+	        })  
+		    .state('home.list', {  
+		        url: '/list',  
+		        templateUrl: 'home-list.html', 
+		        controller: function($scope) {  
+		            $scope.topics = ['Butterscotch', 'Black Current', 'Mango'];  
+		        }  
+		    })  
+		    // nested list with just some random string data  
+		    .state('home.paragraph', {  
+		        url: '/paragraph',  
+		        template: 'I could sure use a scoop of ice-cream. '  
+		    })  
+		    .state('about', {  
+		        url: '/about',  
+		        /* view 用在该状态下有多个 ui-view 的情况，可以对不同的 ui-view 使用特定的 template, controller, resolve data 
+		         绝对 view 使用 '@' 符号来区别，比如 'columnOne@about' 表明名为 'columnOne' 的 ui-view 使用了 'about' 状态的 
+		         模板(template)，相对 view 则无*/  
+		        views: {  
+		            // 无名 view  
+		            '': {  
+		                templateUrl: 'about.html'  
+		            },  
+		            // for "ui-view='columnOne'"  
+		            'columnOne@about': {  
+		                template: '这里是第一列的内容'  
+		            },  
+		            // for "ui-view='columnTwo'"  
+		            'columnTwo@about': {  
+		                templateUrl: 'table-data.html',  
+		                controller: 'Controller'  
+		            }  
+		        }  
+		    });  
+		});  
+		routerApp.controller('Controller', function($scope) {  
+		    $scope.message = 'test';  
+		    $scope.topics = [{  
+		        name: 'Butterscotch',  
+		        price: 50  
+		    }, {  
+		        name: 'Black Current',  
+		        price: 100  
+		    }, {  
+		        name: 'Mango',  
+		        price: 20  
+		    }];  
+		});  
+    </script>
+</body>  
+</html>

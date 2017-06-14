@@ -1,0 +1,5 @@
+bower init--生成bower.json
+
+bower info angular-ui-router
+bower install  angular-ui-router#0.4.2 --save-dev 
+--save-dev(在安装某个js文件时候，加--save-dev是代表将安装和下载的信息进行记录到bower.json中的依赖。)

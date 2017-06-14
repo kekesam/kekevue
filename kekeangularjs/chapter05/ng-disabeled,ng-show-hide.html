@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		<!--不可见-->
+		<div ng-controller="XingController">
+			<input type="radio" name="male" value="1" ng-model="male" ng-checked="male==1?true:false"/>男
+			<input type="radio" name="male" value="0" ng-checked="male==0?true:false"/>女
+		</div>
+		
+		
+		<div ng-if="1>2">是的1>2</div>
+		<div ng-if="1<2">是的1<2</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.controller("XingController",function($scope){
+				$scope.male = 0;
+			});
+			/*
+			 * 内置指令：
+			 * 1:ng-app
+			 * 2:ng-controller
+			 * 3:ng-init
+			 * 4:ng-model
+			 
+			 * 5:ng-if
+			 * 6:ng-switch on
+			 * 7:ng-repeat
+			 * 8:ng-show/ng-hide
+			 * 9:ng-class
+			 * 10:ng-change(ng-事件类型)) ng-click,ng-mouserover等
+			 * 11:ng-include
+			 * 11:ng-href/ng-src
+			 
+			 
+			1: 选中的元素：
+			 checkbox radio
+			 	ng-checked = true/false
+			 select
+			 	ng-selected = true/false
+			 禁止选择：
+			    ng-disabled=true/false
+			2:关于指令如果调用作用域属性和方法的时候是不需要表达式的
+			
+			 * */
+		</script>
+	</body>
+</html>

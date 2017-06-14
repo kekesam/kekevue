@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+		</style>
+	</head>
+	<body ng-controller="ExampleController">
+		
+	
+		
+		<keke-link name="keke" age="30"><h1>当前的文本内容是：{{text}}</h1><h2>{{message}}</h2></keke-link>
+		<script type="text/ng-template" id="tpl">
+			<div class="frame">
+				<input type="text" ng-model="text" ng-init="text=23"/>
+				<div ng-transclude  class="tip"></div>
+				<a href="javascript:void(0);" ng-click="test()">点我</a>
+			</div>
+		</script>
+		
+		<script type="text/javascript">
+			angular.module("myapp",[]).controller("ExampleController",function($scope){
+			}).directive("kekeLink",function($timeout){
+				return {
+					restrict:"EACM",//E:标签(element) A:属性(attribute) C:类别(class),M：注释 
+					replace:true,
+					transclude:true,
+					templateUrl:"tpl",
+					link:function($scope,element,attrs){
+						$scope.test = function(){
+							console.log("属性值分别为："+attrs.name+"==="+attrs.age);
+							console.log("获取当前父类对象为："+attrs.$$element[0].innerHTML);
+							$scope.message = "Hello Directive";
+						};
+						
+						$(element).on("click",function(){
+							alert("1"+this.innerHTML);
+							$scope.message = "Hello Directive 1 ";
+							$scope.$digest();
+						});
+						
+						angular.element(element).on("click",function(){
+							alert("2"+this.innerHTML);
+							$scope.$apply(function(){
+								$scope.message = "Hello Directive 2 ";
+							})
+						});
+						
+						element.bind("click",function(){
+							alert("3"+this.innerHTML)
+							$timeout(function(){
+								$scope.message = "Hello Directive 3";
+							},1000);
+						});
+						
+					}
+				};
+			});
+		</script>
+		
+	</body>
+</html>

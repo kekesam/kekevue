@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css"/>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/Chart.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/angular-chart.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.container{margin-top: 50px;}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container" ng-controller="ChartController">
+			<canvas class="chart chart-bar" chart-click="clickme" chart-data="data" chart-labels="labels"></canvas>
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",["chart.js"]);
+			
+			app.controller("ChartController",function($scope){
+				$scope.labels = ["2015","2016","2017"];
+				$scope.data = [
+					[65,145,78],
+					[645,145,178],
+					[265,1451,78]
+				];
+				
+				$scope.clickme = function (points, evt) {
+				    console.log(points, evt);
+				};
+			})
+			 
+		/*	app.controller("ChartController",["$scope","$charts",function($scope,$charts){
+				
+			}])*/
+			
+		</script>
+		
+	</body>
+</html>

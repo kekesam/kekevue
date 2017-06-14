@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		
+		<a ui-sref="cdetail({model:'JavaController'})">Java课程详情2</a>
+		<a ui-sref="cdetail({model:'PhpController'})">Php课程详情2</a>
+		<a ui-sref="cdetail({model:'JsController'})">Js课程详情2</a>
+		<section ui-view></section>
+		<script type="text/javascript">
+			 //第一步引入：angular-ui-router.min.js
+			 //第二步： var myApp = angular.module("myApp", ["ui.router"]); 注入：ui.router的模块
+			 //第三步：定义视图存放的视图位置:<div ui-view></div>
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 //$state $stateParams 
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	$stateProvider.state("cdetail",{
+			 		url:"/cdetail/:model",
+			 		data:{
+			 			username:"keke",
+			 			age:30,
+			 			address:"湖南长沙"
+			 		},
+			 		template:"<h1>{{title}},{{price}} {{state.current.data}}</h1>",
+			 		controllerProvider:function($stateParams){
+			 			return $stateParams.model;
+			 		}
+			 	});
+			}).controller("JavaController",function($scope,$state){
+		 		$scope.title="Java面向对象";
+		 		$scope.price = "11.58";
+		 		$scope.state = $state;
+		 	}).controller("PhpController",function($scope,$state){
+		 		$scope.title="Php面向对象";
+		 		$scope.price = "101.58";
+		 		$scope.state = $state;
+		 	}).controller("JsController",function($scope,$state){
+		 		$scope.title="Javascrpt面向对象";
+		 		$scope.price = "1881.58";
+		 		$scope.state = $state;
+		 	});
+		</script>
+		
+	</body>
+</html>

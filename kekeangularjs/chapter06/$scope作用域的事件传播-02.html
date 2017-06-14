@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+		<style>
+			strong{font-size:24px;color: green;}
+		</style>
+	</head>
+	<body>
+		<div ng-controller="Gcontroller">
+			<ul>
+				<li>{{gdata.username}}==={{gdata.age}}=={{gdata.count}}==={{gdata.address}}</li>
+			</ul>
+			<!--不可见-->
+			<div ng-controller="ParentController">
+				<ul>
+					<li>{{data.username}}==={{data.age}}=={{data.count}}==={{data.address}}</li>
+				</ul>
+				<div ng-controller="ChildrenController">
+					<button ng-click="toParent()">向父级传播</button>
+					<button ng-click="toChild()">向子集传播</button>
+					<div ng-controller="ChildrenController2">
+						<ul>
+							<li>{{cdata.username}}==={{cdata.age}}=={{cdata.count}}==={{telephone}}</li>
+						</ul>
+					</div>
+				</div>
+				<div ng-controller="XiongdiController">
+					<ul>
+						<li>{{data.username}}==={{data.age}}=={{data.count}}</li>
+					</ul>
+				</div>
+			</div> 
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.controller("Gcontroller",function($scope){
+				$scope.$on("user_emited",function(event,data){
+					alert("g传递给父类的数据如下===="+angular.toJson(data));
+					alert("g传递给父类的数据如下===="+JSON.stringify(data));
+					data["address"]="长沙";
+					$scope.gdata = data;
+				});
+			});
+			
+			app.controller("ParentController",function($scope){
+				$scope.$on("user_emited",function(event,data){
+					alert("////传递给父类的数据如下===="+angular.toJson(data));
+					alert("////传递给父类的数据如下===="+JSON.stringify(data));
+					$scope.data = data;
+					event.targetScope.telephone = "15074816437";
+					alert(event.name);
+					console.log(event.targetScope);
+					console.log(event.currentScope);
+					event.stopPropagation();
+				});
+			});
+			
+			
+			app.controller("ChildrenController",function($scope){
+				$scope.toParent = function(){
+					//我这里进行一些操作，业务，增，删，查，改。。。ajax操作
+					var data = {username:"keke",age:30,count:100};
+					$scope.$emit("user_emited",data);
+				};
+				
+				$scope.toChild = function(){
+					//我这里进行一些操作，业务，增，删，查，改。。。ajax操作
+					var data = {username:"keke2",age:302,count:1020};
+					$scope.$broadcast("user_emited2",data);
+				};
+			});
+			
+			app.controller("ChildrenController2",function($scope){
+				$scope.$on("user_emited2",function(event,data){
+					//alert("传递给子类的数据如下===="+angular.toJson(data));
+					alert("传递给子类的数据如下===="+JSON.stringify(data));
+					$scope.cdata = data;
+				});
+			});
+			
+			app.controller("XiongdiController",function($scope){
+				$scope.$on("user_emited2",function(event,data){
+					//alert("传递给子类的数据如下===="+angular.toJson(data));
+					alert("=======传递给子类的数据如下===="+JSON.stringify(data));
+					$scope.cdata = data;
+				});
+				
+				$scope.$on("user_emited",function(event,data){
+					alert("********传递给父类的数据如下===="+angular.toJson(data));
+					alert("********传递给父类的数据如下===="+JSON.stringify(data));
+					$scope.data = data;
+				});
+			});
+			
+			//事件广播的前提条件是：作用域嵌套（父子继承的关系）
+				
+			//事件广播 $broadcast(父到子)和$emit(子到父) ,定义事件//自定义事件 
+			//$on是用来触发事件的
+			//$scope.$broadcast(eventname,data);。不能阻止冒泡
+			//$scope.和$emit(eventname,data);子到父可以阻止冒泡
+			//$scope.$on(eventname,function(event,data){
+				
+			//})
+			
+			//eventname是监听的传播事件的名称来自于$broadcast和和$emited,event是事件传播过程自动的一些特征。
+			//data就是$broadcast和和$emited的参数
+			//event的属性如下:
+			//event.targetScope, 返回获取广播的作用域
+			//event.currentScope,获取正在传播事件作用域
+			//event.name 传播事件名
+			//event.stopPropagation();防止事件进行冒泡
+			//event.preventDefault(); 阻止代码的事件的发生
+			//event.defatutPrevented;
+		</script>
+	</body>
+</html>

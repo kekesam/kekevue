@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="utf-8" />
+		<title>Angularjs的dom操作</title>
+		<!--<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>-->
+		<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+	</head>
+	<body ng-controller="TestController">
+		
+		
+		<img src="img/1.png" alt="" />
+		<a href="javascript:void(0);" id="test" ng-click="test($event)">点我</a>
+		<div id="box">
+			<span class="items">1</span>
+			<span class="items">2</span>
+			<span class="items">3</span>
+		</div>
+		<script>
+			var app = angular.module("myapp",[]);
+			app.controller("TestController",function($scope){
+				$scope.test = function(e){
+					/*var tdom = document.getElementById("test");
+					var dom = angular.element(tdom);
+					dom.on("click",function(){
+						alert(this.innerHTML);
+					});*/
+					
+					//var $dom = angular.element("#test");
+					//$dom.on("click",function(){
+						var bdom = document.getElementById("box");
+						var items = angular.element(bdom).find("span");
+						alert(items)
+					//});
+				}
+			});
+		</script>
+		
+	</body>
+</html>

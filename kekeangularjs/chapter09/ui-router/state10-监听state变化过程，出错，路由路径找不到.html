@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		
+		<div id="loading" ng-style="{display:block}">正在加载中...</div>
+		<a ui-sref="cdetail({model:'JavaController'})">Java课程详情2</a>
+		<a ui-sref="cdetail({model:'PhpController'})">Php课程详情2</a>
+		<a ui-sref="cdetail({model:'JsController'})">Js课程详情2</a>
+		<a ui-sref="cdetailccc({model:'JsController'})">Js课程详情233333</a>
+		<section ui-view></section>
+		<script type="text/javascript">
+			 //第一步引入：angular-ui-router.min.js
+			 //第二步： var myApp = angular.module("myApp", ["ui.router"]); 注入：ui.router的模块
+			 //第三步：定义视图存放的视图位置:<div ui-view></div>
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 
+		 	 myApp.run(function($rootScope){
+		 	 	$rootScope.$on("$stateChangeStart",function(event, toState, toParams, fromState, fromParams, options){
+		 	 		console.log("1:state改变之前执行的回调函数...");
+		 	 	});
+		 	 	
+		 	 	$rootScope.$on("$stateChangeSuccess",function(event, toState, toParams, fromState, fromParams, options){
+		 	 		console.log("2:state改变完毕执行的回调函数...",fromState,fromParams,toState,toParams);
+		 	 	});
+		 	 	
+		 	 	$rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams){
+		 	 		console.log("3:视图"+unfoundState.to+"找不到...");
+				    console.log(unfoundState.toParams); // {a:1, b:2}
+				    console.log(unfoundState.options); // {inherit:false} + default options
+				});
+				
+				$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+					console.log("4:当state改变过程出现错误执行的回调函数");
+				});
+				
+				
+				$rootScope.$on('$viewContentLoading', function(event, toState, toParams, fromState, fromParams, error){
+					//等待功能
+					$rootScope.block = "block";
+					console.log("5:视图内容正在加载中...");
+				});
+			 });
+			
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	$stateProvider.state("cdetail",{
+			 		url:"/cdetail/:model",
+			 		data:{
+			 			username:"keke",
+			 			age:30,
+			 			address:"湖南长沙"
+			 		},
+			 		template:"<h1>{{title}} {{price}} {{state.current.data}}</h1>",
+			 		controllerProvider:function($stateParams){
+			 			return $stateParams.model;
+			 		}
+			 	});
+			}).controller("JavaController",function($rootScope,$scope,$state,$timeout){
+		 		$scope.$on("$viewContentLoaded",function(){
+		 			$timeout(function(){
+		 				$scope.title="Java面向对象";
+		 				$scope.price = "11.58";
+		 				$scope.state = $state;
+		 				$rootScope.block = "none";
+		 				console.log("6:当前作用域到视图渲染模板完毕....");
+		 			},3000);
+		 		});
+		 	}).controller("PhpController",function($rootScope,$scope,$state,$timeout){
+		 		$scope.$on("$viewContentLoaded",function(){
+		 			$timeout(function(){
+		 				$scope.title="Php面向对象";
+		 				$scope.price = "101.58";
+		 				$scope.state = $state;
+		 				$rootScope.block = "none";
+		 				console.log("6:当前作用域到视图渲染模板完毕....");
+		 			},3000);
+		 		});
+		 	}).controller("JsController",function($rootScope,$scope,$state,$timeout){
+		 		$scope.$on("$viewContentLoaded",function(){
+		 			$timeout(function(){
+		 				$scope.title="Javascrpt面向对象";
+		 				$scope.price = "1881.58";
+		 				$scope.state = $state; 
+		 				$rootScope.block = "none";
+		 				console.log("6:当前作用域到视图渲染模板完毕....");
+		 			},3000);
+		 		});
+		 	}); 
+		 	
+			 
+		</script>
+	</body>
+</html>

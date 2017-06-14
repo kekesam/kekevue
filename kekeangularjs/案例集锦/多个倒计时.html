@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>计算器</title>
+		<link rel="stylesheet" href="bootstrap.css" />
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div id="timebox" ng-controller="timeBackController">
+			<h3 time="2018-06-01 11:25"></h3>
+			<h3 time="2017-07-01 20:18"></h3>
+			<h3 time="2017-08-01 01:12"></h3>
+			<h3 time="2017-09-01 14:18"></h3>
+			<a href="javascript:;" ng-click="stopTime()">暂停</a>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.factory("timeBack",function(){
+				return {
+					format:function(num){
+						if(num<10)num = "0"+num;
+						return num;
+					},
+					time:function(dateString,callback){
+						//获取今天的日期 ,2017年10月1号国庆节距离今天还有多少天，多少小时，多少分钟，多少秒
+						var now = new Date();
+						//今年国庆日期 
+						var endDate = new Date(dateString.replace(/-/g,"/"));
+						//获取到毫秒数 1秒=1000毫秒
+						var stime = endDate.getTime() - now.getTime();
+						//获取两个日期的秒数
+						var second = stime / 1000; 
+						//计算剩下多少天
+						var days =  parseInt(second /60 / 60 / 24); 
+						//剩余多少小时
+						var hours = parseInt(second / 60 / 60 % 24);  
+						//剩余多少分钟
+						var minutes = parseInt(second / 60 % 60); 
+						//剩余多少秒
+						var seconds = parseInt(second % 60); 
+						callback && callback(this.format(days),this.format(hours),this.format(minutes),this.format(seconds));
+					}
+				};
+			});
+			
+			
+			app.controller("timeBackController",function($scope,$interval,timeBack){
+				var h3Dom = angular.element(document.getElementById("timebox")).find("h3");
+				$scope.time = function(){
+					for (var i = 0; i < h3Dom.length; i++) {
+						var time = h3Dom[i].getAttribute("time");
+						timeBack.time(time,function(day,hour,min,sec){
+							h3Dom[i].innerHTML = "距离 【"+time+"】还有："+day+"天"+hour+"时"+min+"分"+sec+"秒";
+						});
+					};
+				};
+				
+				//暂停服务
+				$scope.stopTime = function(){
+					$interval.cancel($scope.stopInterval);	
+				};
+				
+				$scope.time();
+				$scope.stopInterval = $interval(function(){
+					$scope.time();
+				},1000);
+			});
+		</script>
+	</body>
+</html>

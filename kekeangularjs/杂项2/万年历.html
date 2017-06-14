@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin: 0;}
+			body{font-size:14px;font-family: "微软雅黑";padding:20px;}
+			.timetab{width:100%;border-collapse: collapse;background:#333;}
+			.timetab caption{margin:10px 0;text-align: center;}
+			.timetab th,.timetab td{border:1px solid #ccc;padding:10px;color:#fff;text-align: center;}
+			.timetab td.noCheck{color:#999;background:#666;}
+			.timetab td.on{background:green;color:#fff;}
+		</style>
+	</head>
+	<body>
+		<!--
+        	作者：xuchengfeifei@163.com
+        	时间：2017-05-25
+        	描述：E:元素标签 C:类标签 A 属性标签
+        -->
+		<keke-time></keke-time>
+		<div keke-time></div>
+		<div class="keke-time"></div>
+		
+		<script type="text/ng-template" id="timeTemplate">
+			<div> 
+				<table class="timetab">
+					<caption>
+						年份：<select ng-model="year" ng-change="changeTime()" ng-options="data for data in years"><option value="">--请选择年份--</option></select>
+						月份：<select ng-model="month" ng-change="changeTime()" ng-options="data for data in months"><option value="">--请选择月份--</option></select>
+					</caption>
+					<thead>
+						<tr>
+							<th ng-repeat="week in weeks">{{week}}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="row in rows">
+							<td ng-class="[cell.c,{'on':days == cell.num}]" ng-repeat="cell in row track by $index">{{cell.num}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</script>
+		
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.factory("timeBack",function(){
+				return {
+					//获取每个月有多少天
+					getMonthDays : function (year,month){
+						var date = new Date(year,month,1);
+						date.setDate(0);//设置为0，月份自动推一个月
+						return date.getDate();
+					},
+					//获取每个月的第一天是星期几
+					getFirstWeekDay :function (year,month){
+						var date = new Date(year,month-1,1);
+						return date.getDay();
+					},
+			
+					time:function($scope){
+						var days = this.getMonthDays($scope.year,$scope.month);
+						var weekDays = this.getFirstWeekDay($scope.year,$scope.month);
+						//获取上一个月多少天
+						var prevDays  = this.getMonthDays($scope.year,$scope.month-1);
+						var j = 0;//1
+						var mark = false;
+						var index = 0;
+						var kwindex = weekDays - 1;//前面的空格数
+						while(true){
+							var cells = [];
+							for(var i=0;i<7;i++){
+								if(j==0 && i==weekDays){//找首位
+									j++;
+									cells.push({c:"",num:1});
+									mark = true;
+								}else if (j>0 && j<days){
+									j++;
+									cells.push({c:"",num:j});
+								}else{
+									if(!mark){//补前面
+										cells.push({c:"noCheck",num:prevDays-kwindex});
+										kwindex--;
+									}else{//不后面
+										cells.push({c:"noCheck",num:++index});
+									}
+								}
+							}
+							$scope.rows.push(cells);
+							if(j>=days)break;
+						}
+					}
+				}
+			});
+			
+			//定义指令（自定义标签)
+			app.directive("kekeTime",function(){
+				return {
+					restrict:"ECA",
+					replace:true,
+					templateUrl:"timeTemplate",
+					scope:true,//每个指令作用域都是一个全新的，要不然都一样，会影响.
+					controller:"TimeBackController"
+				}
+			});
+			
+			
+			
+			app.controller("TimeBackController",function($scope,timeBack){
+				//年份
+				$scope.years = [];
+				$scope.months = [];
+				for (var i = 2017; i < 2050; i++) {
+					$scope.years.push(i);
+				}
+				
+				for (var i = 1; i <= 12; i++) {
+					$scope.months.push(i);
+				}
+				
+				//默认选中当前年份和月份
+				$scope.year = new Date().getFullYear();
+				$scope.month = new Date().getMonth()+1;
+				$scope.days = new Date().getDate();
+				$scope.weeks=["日","一","二","三","四","五","六"];
+				//定义每一行的装载数组对象
+				$scope.rows = [];
+				//初始化当月
+				timeBack.time($scope);
+				//改变世界触发
+				$scope.changeTime = function(){
+					$scope.rows = [];
+					timeBack.time($scope);
+				};
+			});
+			
+		</script>
+	</body>
+</html>

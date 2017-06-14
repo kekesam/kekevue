@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs关于过滤器的认识</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:14px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+			
+			ul li{float:left;padding:10px 0px;}
+			ul li.odd{background-color:#666;color:#fff;}
+			ul li.even{background-color:#999;color:#fff;}
+			ul li.bold{font-weight: 700;font-size:18px;}
+			ul li span{width:80px;float:left;padding:0 10px;text-align: center;}
+			ul li:hover{background:#ccc;}
+			ul li.on{background: #000;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="ClassController">
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号</span>
+					<span>ID</span>
+					<span>姓名</span>
+					<span>性别</span>
+					<span>价格</span>
+					<span>是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas | orderBy:'-price'" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.id}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"￥":3}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			//filter:筛选的意思(就给数据加过滤条件)
+			/*
+			 * 1：单过滤器 
+			 * {{data|过滤器的名字}}
+			 * 
+			 * orderBy
+			 * 
+			 * 
+			 */
+			
+			
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.datas = [
+					{id:1,name:"柯柯",sex:"男",price:22.69},
+					{id:2,name:"柯柯1",sex:"男",price:88.69},
+					{id:3,name:"柯柯2",sex:"女",price:12.69},
+					{id:4,name:"柯柯3",sex:"女",price:102.629},
+					{id:5,name:"柯柯4",sex:"男",price:120.69},
+					{id:6,name:"柯柯5",sex:"女",price:312.69},
+					{id:7,name:"柯柯6",sex:"男",price:12.69}
+				];
+				
+				
+			});
+		</script>
+	</body>
+</html>

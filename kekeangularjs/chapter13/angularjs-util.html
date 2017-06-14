@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css"/>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-cookies.min.js"></script>
+		<script type="text/javascript" src="js/angular-util.js"></script>
+		<style type="text/css">
+			.container{margin-top: 50px;}
+		</style>
+	</head> 
+	<body>
+		
+		<div class="container" ng-controller="LoginController">
+			<form action="#" method="post" class="form-horizontal">
+				<div class="form-group">
+					<label for="username" class="col-sm-2 control-label">用户名：</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"  ng-model="username" id="username"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">密码：</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" ng-model="password" id="password"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+						<input type="checkbox" ng-click="mark=!mark;" ng-checked="mark"  />
+						<label for="loginDate" class="col-sm-2 control-label">7天自动登录</label>
+					</div>
+				</div>
+				<div >
+					<a class="btn btn-info" ng-click="wirteCookie()">写入</a>
+					<a class="btn btn-success" ng-click="readCookie()">读取</a>
+					<a class="btn btn-warning" ng-click="delCookie()">删除</a>
+					<a ng-click="print()">打印消息</a>
+				</div>
+				<h1 id="result">用户名是：{{data.username}}密码是：{{data.password}}</h1>
+			</form>
+			
+		<!--	
+			<label>用户名：<input type="text"/></label>
+			
+			<label for="age">年龄</label>
+			<input type="text" id="age"/>
+			-->
+		</div>
+	
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",["ngCookies","ngKekeCookie"]); 
+			app.controller("LoginController",function($scope,$cookies,$kekeCookie){
+				
+				$scope.print = function(){
+					$kekeutil.show("我爱你angularjs");
+				};
+				
+				$scope.mark=true;
+				//写入
+				$scope.wirteCookie = function(){
+					var username = $scope.username;
+					var password = $scope.password;
+					var data = {username:username,password:password};
+					if($scope.mark){
+						var date = new Date();
+						date.setDate(date.getDate()+7);
+						$cookies.put("mkData",angular.toJson(data),{
+							expires:date.toGMTString()
+						});
+						
+						///$kekeCookie.setCookie();
+					}
+				};
+				
+				//读取
+				$scope.readCookie = function(){
+					var jsonString = $cookies.get("mkData");
+					$scope.data = angular.fromJson(jsonString);
+				};
+				
+				//删除
+				$scope.delCookie = function(){
+					$cookies.remove("mkData");
+					$scope.data = {};
+				};
+				
+			});
+			
+			
+		</script>
+		
+	</body>
+</html>

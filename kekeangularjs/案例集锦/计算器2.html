@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html ng-app="firstAngular">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>计算器</title>
+		<link rel="stylesheet" href="bootstrap.css" />
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body style="background-color: ;" class="bg-warning">
+		<div class="container">
+			<h2 class="page-header">计算器</h2>
+			<style>
+				*{padding:0;margin:0}
+				.jsq{width:270px;background: #fff;border-radius:5px;overflow: hidden;}
+				.jsq .show{height: 30px;background: #ddd;text-align: right;line-height: 30px;font-size: 16px;font-weight: 600;margin:15px;padding:0 5px;border-radius: 3px;color:#aaa;overflow: hidden;}
+				.jsq .btneare{margin:15px;overflow: hidden;}
+				.jsq .jsqbtn{display:inline-block;width:60px;height:55px;float:left;outline:1px solid #fff;background: #eee;text-align: center;line-height: 55px;}
+				.jsq .jsqbtn:hover{background:#ccc}
+				a{color:#888;text-decoration: none;}
+				a:hover{text-decoration: none;}
+				a:link{text-decoration: none;}
+				.mt-sm{margin-top: 20px;}
+			</style>
+			<div class="jsq" ng-controller="jsq">
+				<div class="show"> 
+					{{show}}
+				</div>
+				<div class="btneare">
+					<a href="###" class="jsqbtn" ng-click="num($event)">1</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">2</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">3</a>
+					<a href="###" class="jsqbtn" ng-click="pos($event)">+</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">4</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">5</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">6</a>
+					<a href="###" class="jsqbtn" ng-click="pos($event)">-</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">7</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">8</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">9</a>
+					<a href="###" class="jsqbtn" ng-click="pos($event)">*</a>
+					<a href="###" class="jsqbtn" ng-click="clear($event)">C</a>
+					<a href="###" class="jsqbtn" ng-click="num($event)">0</a>
+					<a href="###" class="jsqbtn" ng-click="pos($event)">%</a>
+					<a href="###" class="jsqbtn" ng-click="pos($event)">/</a>
+					<a href="###" class="jsqbtn" ng-click="dot($event)">.</a>
+					<a href="###" class="jsqbtn" ng-click="eq($event)">=</a>
+				</div>
+			</div>
+			
+		</div>
+		<script>
+			var contanter = angular.module("firstAngular",[]);
+			//计算器的开发
+			contanter.controller("jsq",function($scope){
+				//数字方法
+				$scope.a = "";
+				$scope.b = "";
+				$scope.show = 0;
+				//判断是否已经点击操作符
+				var mark = true;
+				var cmark = true;
+				var flag = true;
+				var arr = [];
+				$scope.num = function(e){
+					if(mark && flag){
+						if(cmark){
+							$scope.a+=e.target.innerHTML;
+							arr[0] = parseFloat($scope.a);
+						}else{
+							$scope.a =e.target.innerHTML;
+							arr.push(parseFloat($scope.a));
+						}
+					}else{
+						$scope.b = e.target.innerHTML;
+						flag = false;
+						mark = true;
+						arr.push(parseFloat($scope.b)); 
+					}
+					
+					$scope.show = arr.join("");
+				};
+				
+				
+				//符号
+				$scope.pos = function(e){
+					if(mark){
+						arr.push(e.target.innerHTML);
+						mark = false;
+						$scope.show = arr.join("");
+						cmark = true;//操作符号的时候要小数点打开，进行下一次操作
+					}
+				};
+				
+				//小数
+				$scope.dot = function(e){
+					if(cmark){
+						arr.push($scope.show<=0?"0"+e.target.innerHTML:e.target.innerHTML);
+						for (var i = 0; i < arr.length; i++) {
+							if(/[\+|\-|\*|\/|\%]/.test(arr[i]) && arr[i+1]=="."){
+								arr[i+1] = "0.";
+							}
+						}
+						
+						if(arr[0]=="0"){//这里要注意一下
+							arr[0] = "";
+						}
+						
+						$scope.show = arr.join("");
+						cmark = false;//每次操作数字以后就要锁住
+					}
+				};
+				
+				//结果
+				$scope.eq = function(){
+					$scope.show = eval(arr.join(""));
+					$scope.a = $scope.show;
+					$scope.b = "";
+					arr = [$scope.a];
+					mark = true;
+					cmark = true;
+					flag = true;
+				};
+				
+				//清空
+				$scope.clear = function(){
+					$scope.show = 0;
+					$scope.a = "";
+					$scope.b = "";
+					arr = [];
+					mark = true;
+					cmark = true;
+					flag = true;
+				};
+			});
+			
+			
+			
+		</script>
+	</body>
+</html>

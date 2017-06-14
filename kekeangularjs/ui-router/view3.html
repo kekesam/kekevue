@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-app="app" ng-controller="ctrl">
+<a href="#/main" ui-sref="main">main</a>
+<a href="#/main2" ui-sref="main2">main2</a>
+<a href="" ng-click="gomain3()">main3</a>
+    <div ui-view>
+        <p>ui-view没有被替换掉,你就能看到我了</p>
+    </div>
+</body>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+<script>
+    angular.module('app',['ui.router'])
+        .config(['$stateProvider','$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise("/main");
+            $stateProvider.state('main',{
+                url:"/main",
+                template:'<div>main1:{{title}}</div>',
+                controller:['$scope', function ($scope) {
+                    $scope.title='hello angular';
+                }]
+            }).state({
+                name:"main2",
+                url:"/main2",
+                template:'<div>main2:{{title}}</div>',
+                controller: function ($scope) {
+                    $scope.title="hello angulr main2";
+                }
+            }).state("main3",{
+                url:"/main3",
+                template:"<div>main3:{{name}}</div>",
+                controller: function ($scope) {
+                    $scope.name="hello 张三"
+                }
+            });
+        }]).controller('ctrl', function ($scope,$state) {
+               $scope.gomain3= function () {
+                   $state.go("main3");
+               }
+        })
+</script>
+</html>

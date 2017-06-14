@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="AppController">
+			
+			<a href="#" id="clickme">点我</a>
+			<h1>{{message}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",[]);
+			app.controller("AppController",function($scope,$timeout,$interval){
+				angular.element(document.getElementById("clickme")).on("click",function(){
+					/*$timeout(function(){
+						$scope.message = "OK";
+					},1000);*/
+					$interval(function(){
+						$scope.message += "OK";
+					},1000);
+				});
+			});
+			
+		</script>
+	</body>
+</html>

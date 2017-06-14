@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="contacts">联系我们</a>
+	<a ui-sref="course">课程</a>
+    <section ui-view></section>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+			/*4秒以后在渲染视图*/
+			$stateProvider.state('contacts', {
+			  url:"/contacts",	
+			  template:"<div>{{title}}</div>",
+			  controller:function($scope){
+			  	$scope.title = "Hello UI Router";
+			  }
+			}).state("course",{
+				url:"/course",	
+				template:"<div>{{title}}</div>",
+				controller:"CourseController"
+			});
+		}).controller("CourseController",function($scope){
+			$scope.title = "我是一个课程Java 面向对象";
+		});
+    </script>
+</body>
+<html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于指令-directive--重要属性-link</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		
+		<style type="text/css">
+			*{padding:0;margin:0;}
+			body{padding:100px;}
+			.mk_diretive_banner{background:red;overflow: hidden;}
+			.search{background:#ccc;border:1px solid #eee;width:260px;margin:10px 0;}
+			.search input{border:0 ;height:26px;line-height: 26px;width:200px;outline:none;text-indent: 0.5em;}
+			.search button{height:26px;width:60px;border:0;}
+		</style>
+		
+		
+	</head>
+	<body>
+		
+		<div class="box">
+			<keke-parent>
+				<h1>parent===>{{pmessage}}</h1>	
+				<keke-child>
+					<h1>child===>{{cmessage}}</h1>	
+				</keke-child>
+				<button ng-click="click()">点我</button>
+			</keke-parent>
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",[]);
+			app.directive("kekeParent",function(){
+				return {
+					restrict:"CEA",
+					controller:function($scope,$compile,$http){//作用域
+						
+						this.toChild = function(cscope){
+							$scope.pmessage = "今天天气不错!";
+							$scope.click = function(){
+								//数据交换
+								$scope.tmp = $scope.pmessage;
+								$scope.pmessage = cscope.cmessage;
+								cscope.cmessage = $scope.tmp;
+							};
+						}
+					}
+				}; 
+			}).directive("kekeChild",function(){
+				return {
+					restrict:"CEA", 
+					require:"^?kekeParent",//子作用域可以共享父作用域
+					link:function($scope,element,attrDom,pscope){
+						$scope.cmessage = "却不错，天气18°";
+						pscope.toChild($scope);	
+					}
+				};
+			});
+		</script>
+		
+	</body>
+</html>

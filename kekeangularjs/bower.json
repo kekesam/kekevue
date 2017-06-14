@@ -1,0 +1,25 @@
+{
+  "name": "kekeangularjs",
+  "authors": [
+    "kekesam <xuchengfeifei@163.com>"
+  ],
+  "description": "kekeanrgularjs",
+  "main": "",
+  "keywords": [
+    "keke",
+    "auglarjs"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-route": "^1.6.4",
+    "angular-ui-router": "0.4.2"
+  }
+}

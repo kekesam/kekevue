@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>关于承诺Promise</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body>
+		
+		<!--
+        	作者：xuchengfeifei@163.com
+        	时间：2017-05-25
+        	描述：
+        	
+        	$http.请求类型(url,[data],[config])
+        	.success(function(data,status,headers,config){})
+        	.error(function(data,status,headers,config){
+        		
+        	});
+        	
+        -->
+		
+		
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.controller("HttpController",function($scope,$http){
+				$http.post("xxxxx.jsp",{username:"keke"})
+				.success:function(data){
+					alert("执行成功"+data)
+					$scope.data = data;
+				}.error(function(err){
+					alert("错误是"+err);
+				});
+				
+				//$.ajax(){
+//					type:"post",
+//					url:"xxx.jsp",
+//					data:{username:"keke"},
+//					error:function(err){
+//						
+//					}
+//					success:function(data){
+//						$scope.data = data;
+//					}
+				//};
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/angular-ui-router.js"></script>
+</head>
+<body>
+    <h1>AngularJS Home Page (Ui-router Demonstration)</h1>
+    <div ui-view></div>
+    
+    
+    
+    <script type="text/ng-template" id="tpl">
+    	<h1>page4 Content...............</h1>
+    </script>
+    
+    <script type="text/javascript">
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+			//初始化根路由
+		     $urlRouterProvider.when("", "/pagetab");
+		     $stateProvider.state("pagetab", {
+		            url: "/pagetab",
+		            templateUrl: "PageTab.html"
+		       }).state("pagetab.Page1", {
+		            url:"/Page1",
+		            templateUrl: "../template/Page1.html"
+		       }) .state("pagetab.Page2", {
+		            url:"/Page2",
+		            templateUrl: "../template/Page2.html"
+		       }).state("pagetab.Page3", {
+		            url:"/Page3",
+		            templateUrl: "../template/Page3.html"
+		       }).state("pagetab.Page4",{
+		       		url:"/page4",
+		       		templateUrl:"tpl"
+		       }).state('pagetab.home', {
+			        url: "/home/:contactId",
+			        template: '<div>ok</div>',
+			        controller: function ($stateParams) {
+			        	console.log($stateParams.contactId);
+			        }
+			   });
+		});
+    </script>
+</body>
+<html>

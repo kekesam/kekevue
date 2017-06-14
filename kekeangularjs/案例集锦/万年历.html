@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>计算器</title>
+		<link rel="stylesheet" href="bootstrap.css" />
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+		<style>
+			body{padding:40px;}
+			.timetab{width:100%;border-collapse: collapse;background:#333;}
+			.timetab th,.timetab td{border:1px solid #ccc;text-align: center;padding:20px;color:#fff;}
+			.ccc{color:#999!important;}
+			.current{background:green!important;}
+		</style>
+	</head>
+	<body>
+		
+		<!--<div ng-repeat="n in [42, 42, 43, 43] track by $index">
+		  {{n}}
+		</div>
+		<hr />
+		<div ng-repeat="n in [42, 43]">
+		  {{n}}
+		</div>-->
+		
+		<div ng-controller="timeBackController">
+			<table class="timetab">
+				<caption>
+					年份：<select ng-change="changeDate()" ng-model="year" ng-options="data  for data in years">
+						<option value="">--请选择--</option>
+					</select>
+					月份：<select ng-change="changeDate()" ng-model="month" ng-options="data  for data in months">
+						<option value="">--请选择--</option>
+					</select>
+				</caption>
+				<thead>
+					<tr>
+						<th ng-repeat="week in weeks">{{week}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="data in rows">
+						<td ng-repeat="cdata in data track by $index"  ng-class="[cdata.c,{'current':date == cdata.num}]">{{cdata.num}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.factory("calc",function(){
+				return {
+					isRunnian:function(){
+						$scope.days = 28;
+					},
+					getDayOfMonth:function(year,month){
+						var ctime = new Date(year,month,1);
+						ctime.setDate(0);
+						var dayOfMonth=ctime.getDate();
+						return dayOfMonth;
+					},
+					getFirstWeekDay:function(year,month){
+						var ctime = new Date(year,month-1,1);
+						return ctime.getDay();
+					},
+					changeTime:function($scope){
+						//获取本月的天数
+						var dayofMonth = this.getDayOfMonth($scope.year,$scope.month);
+						var prevDayOfMonth = this.getDayOfMonth($scope.year,$scope.month-1);
+						
+						//获取本月的第一天是星期几
+						var weekDay = this.getFirstWeekDay($scope.year,$scope.month);
+						var j = 0;
+						var mark = false;
+						var index = 1;
+						var kindex = weekDay-1;
+						while(true){
+							var cells = [];
+							for (var i = 0; i < 7; i++) {
+								if(j==0 && i==weekDay){
+									j++;
+									cells.push({c:"",num:1});
+									mark = !mark;
+								}else if(j>0 && j < dayofMonth){
+									j++;
+									cells.push({c:"",num:j});
+								}else {
+									if(!mark){
+										cells.push({c:"ccc",num:prevDayOfMonth-kindex});
+										kindex --;
+									}else{
+										cells.push({c:"ccc",num:index++});
+									}
+								}
+							} 
+							
+							$scope.rows.push(cells);
+							if(j>=dayofMonth)break;
+						}
+					}
+				}
+			});
+			
+			app.controller("timeBackController",function($scope,calc){
+				//初始化页面的年份和月份数据
+				$scope.years = [];
+				$scope.months = [];
+				for (var i = 2017; i <=2050; i++) {
+					$scope.years.push(i);
+				}
+				for (var i = 1; i <=12; i++) {
+					$scope.months.push(i);
+				}
+				
+				$scope.weeks=["日","一","二","三","四","五","六"];
+				
+				//初始化今年年份和月份
+				$scope.year = new Date().getFullYear();
+				$scope.month = new Date().getMonth()+1;
+				$scope.date =  new Date().getDate();
+				$scope.rows = [];
+				calc.changeTime($scope);
+				$scope.changeDate = function(){
+					$scope.rows = [];
+					calc.changeTime($scope);
+				};
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="TestController">
+			{{message}}
+			
+			<a href="javascript:void(0);" ng-click="cancelInterval()">暂停</a>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.controller("TestController",function($scope,$interval){
+				$scope.message = "";
+				
+				$scope.cinterval = $interval(function(){
+					$scope.message += "OK ";
+				},2000);
+				
+				//清楚定时器
+				$scope.cancelInterval = function(){
+					$interval.cancel($scope.cinterval);
+				};
+				
+				//$timeout同理
+			});
+			
+		</script>
+		
+	</body>
+</html>

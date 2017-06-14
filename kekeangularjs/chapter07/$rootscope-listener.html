@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html ng-app="routeApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<!--不可见-->
+		<div>
+			<ng-highlight>111水电费水电费111111111111</ng-highlight>
+			<div id="box">水电费水电费</div>
+		</div>
+		
+		<script type="text/javascript">
+	        var routeApp = angular.module('routeApp', ['ngRoute']).run(function ($rootScope, authService) {
+			    $rootScope.$on('$routeChangeSuccess', function (evt, next, current) {
+			        //在前台，后台，标注，都发现这里多次请求，
+			        console.log("發動請求：");
+			        if (authService.ifHasLogin()) {
+			            $rootScope.isShow = false;
+			        } else {
+			            $rootScope.isShow = true;
+			        }
+			    });
+			});
+		</script>
+	</body>
+</html>

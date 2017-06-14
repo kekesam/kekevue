@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs关于过滤器的认识</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:14px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+			
+			ul li{float:left;padding:10px 0px;}
+			ul li.odd{background-color:#666;color:#fff;}
+			ul li.even{background-color:#999;color:#fff;}
+			ul li.bold{font-weight: 700;font-size:18px;}
+			ul li span{width:80px;float:left;padding:0 10px;text-align: center;}
+			ul li:hover{background:#ccc;}
+			ul li.on{background: #000;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="ClassController">
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号  <input type="text" ng-model="keyword" /></span>
+					<span ng-click="order('id',!desc)">ID</span>
+					<span ng-click="title='name';desc=!desc;">姓名</span>
+					<span ng-click="title='sex';desc=!desc;">性别</span>
+					<span ng-click="title='price';desc=!desc;">价格</span>
+					<span>是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas | filter:rangePrice | orderBy:title:desc" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.id}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"￥":3}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+			
+			
+			<ul>
+				<li ng-class="'bold'">
+					<span>序号 <input type="text" ng-model="keyword" /></span>
+					<span ng-click="order('id',!desc)">ID</span>
+					<span ng-click="title='name';desc=!desc;">姓名</span>
+					<span ng-click="title='sex';desc=!desc;">性别</span>
+					<span ng-click="title='price';desc=!desc;">价格</span>
+					<span>是否首条</span>
+					<span>是否末尾</span>
+				</li>
+				
+				<li ng-repeat="stu in datas | filter:rangePrice | orderBy:title:desc" ng-class-even="'even'" 
+					ng-class-odd="'odd'" ng-class="{'on':$index==focus}" ng-click="clickeme($index)">
+					<span>{{$index+1}}</span>
+					<span>{{stu.id}}</span>
+					<span>{{stu.name}}</span>
+					<span>{{stu.sex}}</span>
+					<span>{{stu.price | currency:"￥":3}}</span>
+					<span>{{$first?"是":"否"}}</span>
+					<span>{{$last?"是":"否"}}</span>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			/*
+			 * {{data|filter:函数名}}
+			 */
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.datas = [
+					{id:1,name:"啊A柯柯男",sex:"其他",price:22.69},
+					{id:2,name:"不B柯柯1",sex:"男",price:88.69},
+					{id:3,name:"才C柯柯2",sex:"女",price:12.69},
+					{id:4,name:"的D柯柯3",sex:"女",price:102.629},
+					{id:5,name:"eE柯柯4",sex:"男",price:120.69},
+					{id:6,name:"fF柯柯5",sex:"女",price:312.69},
+					{id:7,name:"给G柯柯6",sex:"男",price:12.69}
+				];
+				//排序相关
+				$scope.title = "price";
+				$scope.desc = false;
+				//搜索的关键词
+				$scope.keyword = ""; 
+				
+				$scope.order = function(field,desc){
+					$scope.title = field;
+					$scope.desc = desc;
+				};
+				
+				//自定义filter的业务过滤器
+				$scope.rangePrice = function(data){
+					return data.price >=80 && data.price <=120;
+				};
+			});
+		</script>
+	</body>
+</html>

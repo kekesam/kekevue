@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<style>
+			.box{border:1px dashed #ccc;padding:20px;}
+			.box1{border:3px dashed red;padding:20px;}
+		</style>
+		
+		<div ng-controller="ClassController">
+			
+			<h1 ng-class="'box'">{{title}}</h1>
+			
+			
+			<input type="text" ng-model="boxname" value="box"/>
+			<input type="text" ng-model="background" value="red"/>
+			
+			<h1 ng-class="boxname" ng-style='{background:background}'>{{title}}</h1>
+			<h1 ng-class="boxname" style='background:{{red}}'>{{title}}</h1>
+			
+			{{background}}
+			
+			<hr />
+			
+			
+		</div>
+		
+		<script type="text/javascript">
+			
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.title = "Ng-Class的详解";
+				$scope.boxname = "box";
+				$scope.background = "red";
+			});
+			
+			
+		</script>
+		
+	</body>
+</html>

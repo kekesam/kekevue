@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		
+		<a ui-sref="home">我是首页</a>
+		<a ui-sref="about">关于我们</a>
+		<a ui-sref="course({cid:11,name:'Java'})">课程详情</a>
+		<section ui-view></section>
+		<script type="text/javascript">
+			 //第一步引入：angular-ui-router.min.js
+			 //第二步： var myApp = angular.module("myApp", ["ui.router"]); 注入：ui.router的模块
+			 //第三步：定义视图存放的视图位置:<div ui-view></div>
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	$stateProvider.state("home",{
+			 		url:"/home",
+			 		template:"<h1>{{title}}</h1>",
+			 		controller:function($scope){
+			 			$scope.title = "首页";
+			 		}
+			 	}).state("about",{
+			 		url:"/about",
+			 		template:"<h1>{{title}}</h1>",
+			 		controller:function($scope){
+			 			$scope.title = "关于我们";
+			 		}
+			 	}).state("course",{
+			 		url:"/detail/:cid/{name}",
+			 		template:"<h1>{{title}}</h1>",
+			 		controller:function($scope,$stateParams){
+			 			$scope.title = "获取参数的ID是:"+$stateParams.cid+"=="+$stateParams.name;
+			 		}
+			 	});
+			 });
+		</script>
+		
+	</body>
+</html>

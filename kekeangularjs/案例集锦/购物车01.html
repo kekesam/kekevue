@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-购物车</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+		<style>
+			*{padding:0;margin:0}
+			body{font-family: "微软雅黑";font-size: 12px;}
+			a{text-decoration: none;color:#222;}
+			.container{margin:30px;}
+			.tab{border-collapse: collapse;width:100%;}
+			.tab th,.tab td{border:1px solid #ccc;text-align: center;padding:10px;}
+			.inp{width:100px;height:32px;text-align: center;outline: none;font-family: inherit;font-weight: bold;color:red;font-size: 18px;}
+			.infobox,.footer{border:1px solid #ccc;padding:10px;text-align: right;font-weight: bold;font-size:16px;color:green;}
+			.footer{border-top:0;}
+			.infobox{border-bottom: 0;}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container" ng-controller="ShopCarController">
+			<div class="infobox">
+				<a href="javascript:void(0);">+添加商品</a>
+			</div>
+			<table class="tab">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>名字</th>
+						<th>金额</th>
+						<th>数量</th>
+						<th>小计</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="data in datas">
+						<td>{{data.id}}</td>
+						<td>{{data.name}}</td>
+						<td style="width:100px;"><input type="text" class="inp" ng-model="data.price"/></td>
+						<td style="width:100px;"><input type="text" class="inp" ng-model="data.num"/></td>
+						<td style="width:100px;">{{data.price * data.num}}元</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="footer">
+				总计：{{totals()}}元
+			</div>
+		</div>
+		
+		
+		<script>
+			
+			//初始化angularjs操作对象
+			var app = angular.module("myapp",[]);
+			
+			app.controller("ShopCarController",function($scope){
+				//初始化数据
+				$scope.datas = [
+					{id:1,name:"鞋子",price:12,num:1},
+					{id:2,name:"衣服",price:2,num:1},
+					{id:3,name:"帽子",price:121,num:1},
+					{id:4,name:"围巾",price:122,num:1},
+					{id:5,name:"娃子",price:112,num:1}
+				];
+				
+				
+				$scope.totals = function(){
+					var totalPrice = 0;
+					for (var i = 0; i < $scope.datas.length; i++) {
+						totalPrice +=($scope.datas[i].price * $scope.datas[i].num);
+					}
+					return totalPrice;
+				};
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于指令-directive--重要属性</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		
+		<style type="text/css">
+			*{padding:0;margin:0;}
+			body{padding:100px;}
+			.search{background:#ccc;border:1px solid #eee;width:260px;margin:10px 0;}
+			.search input{border:0 ;height:26px;line-height: 26px;width:200px;outline:none;text-indent: 0.5em;}
+			.search button{height:26px;width:60px;border:0;}
+		</style>
+		
+		
+	</head>
+	<body>
+		
+		
+		
+		<!--指令-->
+		<keke-search>
+			我爱你{{text}}
+		</keke-search><!-- E -->
+		
+		<!--指令-->
+		<keke-search>
+			我也爱你{{text}}
+		</keke-search><!-- E -->
+		
+		<!--模板-->
+		<script type="text/ng-template" id="tpl">
+			<div class="mk_diretive_banner">
+				<div class='search'><p><input /><button>搜索</button></p></div>
+				<div ng-transclude></div>
+			</div>
+		</script>
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",[]);
+			app.directive("kekeSearch",function(){
+				return {
+					restrict:"ECA",//定义指令的类型  E --element C:class
+					templateUrl:"tpl",
+					replace:true,/*replace是boolean类型，默认是false,代表template模板是否替换宿主标签*/
+					transclude:true/*transclude:是boolean,默认也是false,如果为true,那么在模板中可以通过ng-transclude方法替换指令元素中的内容*/
+				};
+			});
+			
+			//重点：模板不允许使用平级标签.
+			
+		</script>
+		
+	</body>
+</html>

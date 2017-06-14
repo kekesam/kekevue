@@ -1,0 +1,52 @@
+<!DOCTYPE html>  
+<html ng-app="myapp">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>前端研究</title>  
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular-route.min.js"></script>	
+</head>  
+<body>  
+    <nav>
+    	<a href="#!/">首页</a>
+    	<a href="#!/course">课程</a>
+    	<a href="#!/book">书籍</a>
+    	<a href="#!/about">关于我们</a>
+    </nav>
+    <div ng-view></div>
+    
+    <script type="text/javascript">
+     	var app = angular.module("myapp",["ngRoute"]);
+     	
+     	app.config(function($routeProvider){
+     		$routeProvider.when("/",{
+     			controller:"IndexController",
+     			template:"<div class='index'>{{title}}</div>"
+     		}).when("/course",{
+     			controller:function($scope){
+     				$scope.title="我是课程";
+     			},
+     			template:"<div class='course'>{{title}}</div>"
+     		}).when("/book",{
+     			controller:function($scope){
+     				$scope.title="我是书籍";
+     			},
+     			template:"<div class='course'>{{title}}</div>"
+     		}).when("/about",{
+     			controller:function($scope){
+     				$scope.title="关于我们";
+     			},
+     			template:"<div class='course'>{{title}}</div>"
+     		}).otherwise({
+     			redirectTo:"/"
+     		})
+     	});
+     	
+     	app.controller("IndexController",function($scope){
+     		$scope.title = "我是首页";
+     	});
+     	
+    </script>
+</body>  
+</html>  

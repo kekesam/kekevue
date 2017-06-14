@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<script src="angular.min.js"></script>
+<script src="https://cdn.bootcss.com/angular.js/1.6.4/angular-route.min.js"></script>
+</head>
+<body>
+	<a href="#!/">首页</a>
+	<a href="#!/book">书籍</a>
+	<a href="#!/game">游戏</a>
+	<div ng-view></div>
+<script> 
+	var app = angular.module('myApp',["ngRoute"]);
+	app.config(function($routeProvider){
+		$routeProvider
+		.when("/",{
+			controller:function($scope){
+				$scope.title = "我是首页";
+			},
+			template:"<div>{{title}}</div>"
+		})
+		.when("/book",{
+			controller:function($scope){
+				$scope.title = "我是书籍";
+			},
+			template:"<div>{{title}}</div>"
+		})
+		.when("/game",{
+			controller:function($scope){
+				$scope.title = "我是游戏";
+			},
+			template:"<div>{{title}}</div>"
+		}).otherwise({
+			redirectTo:"/"
+		});
+	});
+</script>
+</body>
+</html>
