@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+	<style>.active{color:red;}</style>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref-active="active" ui-sref="contacts">联系我们</a>
+    <section ui-view></section>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+		    $stateProvider.state('contacts.detail.subitem', {
+			   url: '/item/:itemId',
+			   views:{
+			   		"info@contacts.detail":{
+			   			template:"<h1>info</h1>"
+			   		}
+			   }
+			   //controller: function($stateParams){
+			      //$stateParams.contactId //*** Watch Out! DOESN'T EXIST!! ***//
+			      //$stateParams.itemId //*** Exists! ***//  
+			   //}
+			}).state('contacts.detail', {
+		        //url: "/:contactId",
+		        //url:"/{contactId}",
+		        url:"/{contactId:int}",//只允许输入数字
+		        //url:"/user/{id:[^/]*}",//不允许/开头
+		        //url:"/user/{id:[0-9a-fA-F]{1,8}}",//id为数字a-f,A-F长度一到8位
+		        //url:"/files/{path:.*}",//files/,/files/23423
+		        //url:"/files/*path",//以path结尾/files/xxxpath,files/path
+		        templateUrl: 'view/contacts.detail.html',
+		        controller: function ($stateParams) {
+		        	console.log($stateParams.contactId)
+		        }
+		    }) .state('contacts', {
+		        url: "/contacts",
+		        templateUrl: 'view/contacts.html'
+		    });
+		});
+    </script>
+</body>
+<html>

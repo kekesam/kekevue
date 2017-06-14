@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="report">联系我们</a>
+	<div ui-view></div>		
+   	<div ui-view="filters"></div>		
+	<div ui-view="tabledata"></div>		
+	<div ui-view="graph"></div>	
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+			$urlRouterProvider.when("","/report");
+		    $stateProvider.state('report', {
+		    	url:"/report",
+			    views: {
+			      '':{
+			      	template:"<h1>Hello Index</h1>"
+			      },
+			      'filters': {
+			      	template:"<h1>Hello Filters</h1>"
+			      },
+			      'tabledata': {
+			      	template:"<h1>Hello tabledata</h1>"
+			      },
+			      'graph': {
+			      	template:"<h1>Hello graph</h1>"
+			      },
+			    }		
+			 });
+		});
+    </script>
+</body>
+<html>

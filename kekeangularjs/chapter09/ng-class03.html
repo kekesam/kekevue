@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<style>
+			.box1{border:3px dashed red;padding:20px;color:blue;}
+			.box{border:1px dashed #ccc;padding:20px;color:red;font-size:32px;}
+		</style>
+		
+		<div ng-controller="ClassController">
+			<h1 ng-class="{true:'box',false:'box1'}[flag]">{{title}}</h1>
+			<hr />
+			<div ng-if="flag">
+				<h1 ng-class="'box'">*****{{title}}</h1>
+			</div>
+			<div ng-if="!flag">
+				<h1 ng-class="'box1'">====>{{title}}</h1>
+			</div>
+			<hr />
+			<h1 ng-class="['box1','box']">{{title}}</h1>
+			<h1 ng-class="[boxclass1,boxclass]">{{title}}</h1>
+			<h1 ng-class="boxarr">{{title}}</h1>
+			<hr />
+			<h1 ng-class="{'box':flag,'box1':mark}">{{title}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.title = "Ng-Class的详解";
+				$scope.boxclass1 = "box1";
+				$scope.boxclass = "box";
+				$scope.boxarr = ['box1',"box"];
+				$scope.flag = false;
+				$scope.mark = true;
+			});
+			
+			
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs关于过滤器的认识</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:14px;font-family: "微软雅黑";}
+			a{text-decoration: none;color:#333;}
+			ul li{list-style:none;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="ClassController">
+			<h1>{{c|substring:1:2}}</h1>
+			<h1>{{c|substring:1:10}}</h1>
+			<h1>{{c2}}</h1>
+			<h3>{{"keke"|suffix}}</h3>
+			
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			//filter是原理其他：
+			//$filterProvider
+			//$filter("过滤器的名字")(内容,参数，参数)
+			var app = angular.module("myapp",[]);
+			
+			app.config(function($filterProvider){
+				
+				//第二种注册
+				$filterProvider.register('suffix', function(){
+					return function(data){
+						return "MK_"+data;
+					};
+				});
+				
+			});
+			
+			app.controller("ClassController",function($scope,$filter){
+				$scope.c = $filter("uppercase")("123456789ASDFSA");
+				$scope.c2 = $filter("substring")("123456789ASDFSA",1,10);
+			}).filter("substring",function(){//定义很的工具类
+				return function(data,sindex,eindex){
+					return data.substring(sindex,eindex);
+				}
+			});
+			
+		</script>
+	</body>
+</html>

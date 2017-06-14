@@ -1,0 +1,39 @@
+第一步：
+1：下载：https://nodejs.org/en/
+2：如果是你是window7+系统，window+R .输入cmd命令，打开黑窗口
+3:输入node -v。如果出现版本号恭喜安装成功了
+
+第二步
+比如复制：F:\梦柯移动App\kekeangularjs
+1:F:敲回车
+2:cd F:\梦柯移动App\kekeangularjs敲回车 
+3:安装 npm install bower -g
+
+第三步：bower资源管理库，这里有常见jquery,boostrap,mustche,angularjs,vues,webpack等的安装包和版本控制
+就业是jquery团队，boostrap团队升级以后都会bower的仓库进行提交版本
+用户可以直接通过bower的一些命令进行下载和删除，替换版本。
+bower -v
+官网：https://bower.io/
+	bower init 初始化bower.json文件
+	bower info 库 查看某个包的版本信息
+	bower list 查看当下bower.json已经按照那些包
+	bower install：批量 安装bower.json中记录的包
+	bower install 包。下载具体的包,如果没有指明版本，下载都是最新版本
+	bower install 包#版本号：下载指定版本的包
+	bower uninstall:批量卸载
+	bower uninstall 包：单独卸载
+
+
+第四步：下载 angularjs jquery
+bower init
+bower install angularjs
+
+
+
+强制终止执行：ctrl+c
+
+
+
+
+
+

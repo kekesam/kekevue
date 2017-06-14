@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>关于承诺Promise</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body>
+		
+		
+		//承诺解决的就是地狱回调的问题 Promise 
+		<script type="text/javascript">
+			/*
+			function show(time,fn){
+				setTimeout(function(){//模拟ajax
+					console.log(time+"秒后");
+					fn();
+				},time * 1000);
+			}
+			
+			
+			show(1,function(){
+				console.log("操作1");
+				show(2,function(){
+					console.log("操作2");
+					show(3,function(){
+						console.log("操作3");
+					});
+				});
+			});*/
+			
+			/**
+			 *  承诺的定义如下 es2015才看到。新语法
+			 	
+			 	//ajax,图片延迟加载
+			 	return new Promise(function(resolve,reject){
+					
+				});
+				
+				resolve:执行成功执行的回调函数
+				reject：失败执行的回调函数
+				
+			 * */
+			
+			/*function show(time){
+				return new Promise(function(resolve,reject){
+					setTimeout(function(){//模拟ajax
+						console.log(time+"秒后");
+						resolve();//成功执行的函数。
+					},time * 1000);
+				});
+			};
+			
+			show(1).then(function(){
+				console.log("操作1");
+				return show(2);
+			}).then(function(){
+				console.log("操作2");
+				return show(3);
+			}).then(function(){
+				console.log("操作3");
+			});*/
+
+
+			var $ajax = function(url){
+				return new Promise(function(resolve,reject){
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET",url);
+					xhr.onreadystatechange  = function(){
+						if(xhr.status ==200 && xhr.readyState==4){
+							resolve(this.responseText);
+						}else{
+							reject(new Error(this.statusText));
+						}
+					};
+					xhr.send();
+				});
+			};
+			
+			$ajax("xxxxx").then(function(data){
+				//执行成功进入这里
+			}).catch(function(err){
+				//执行是吧和错误进入这里
+			});
+			
+			$ajax("xxxxx").then(function(data){
+				//执行成功进入这里
+			},function(err){
+				//执行是吧和错误进入这里
+			});
+			
+			//如果在讲--es2015在去讲解
+			//jquery ,angularjs
+			
+			
+			/*function show(){
+				var promise = $.Deferred();//new Promise()
+				setTimeout(function(){
+					console.log("2秒后执行：");
+					promise.resolve();
+				},2000);
+				return promise;
+			}
+			
+			show().then(function(){
+				console.log("操作2............");
+			})*/
+			
+			
+		</script>
+		
+	</body>
+</html>

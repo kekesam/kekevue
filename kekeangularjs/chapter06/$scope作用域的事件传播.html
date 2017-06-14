@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+		<style>
+			strong{font-size:24px;color: green;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<!--不可见-->
+		<div ng-controller="ClassRoomController">
+			<ul>
+				<li ng-repeat="(key,value) in classrooms">
+					<p>
+						<span>{{key}}</span>
+						<span>总共有<strong>{{value.length}}</strong>个学生</span>
+						<a href="javascript:void(0);" ng-click="add(key)">添加</a>
+					</p>
+					<ul>
+						<li ng-repeat="data in value">
+							<span>{{data.id}} {{data.name}} {{data.age}}</span>
+							<a href="javascript:void(0);" ng-click="del1($event)">删除</a>
+							<a href="javascript:void(0);" ng-click="del2(key,data.id)">删除</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.controller("ClassRoomController",function($scope){
+			
+				$scope.classrooms = {
+					"classroom1":[
+						{id:"S1001",name:"keke",age:30},
+						{id:"S1002",name:"小心",age:10},
+						{id:"S1003",name:"小艾",age:20}
+					],
+					"classroom2":[
+						{id:"S1001",name:"keke",age:30},
+						{id:"S1002",name:"小心",age:10},
+						{id:"S1003",name:"小心2",age:10},
+						{id:"S1004",name:"小心3",age:10},
+						{id:"S1005",name:"小心4",age:10},
+						{id:"S1006",name:"小艾",age:20}
+					],
+					"classroom3":[
+						{id:"S1001",name:"keke55",age:30},
+						{id:"S1006",name:"小艾2323",age:20}
+					],
+				};
+				
+				//删除
+				$scope.del1 = function(e){
+					var targetDom = e.target;
+					angular.element(targetDom).parent().remove();
+				};
+				
+				//删除
+				$scope.del2 = function(key,id){
+					var studentArr = $scope.classrooms[key];
+					for (var i = 0; i < studentArr.length; i++) {
+						if(studentArr[i].id == id){
+							studentArr.splice(i,1);
+						}
+					}
+				};
+				
+				//添加元素
+				$scope.add = function(key){
+					$scope.classrooms[key].push({id:"S1007",name:"小艾2322223",age:120})
+				};
+			});
+		</script>
+	</body>
+</html>

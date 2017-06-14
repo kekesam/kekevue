@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>关于承诺Promise</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+	</head>
+	<body>
+		
+		<img src="http://p2.jmstatic.com/product/001/648/1648502_std/1648502_dx_1500_400.jpg"/>
+		<img src="http://p2.jmstatic.com/product234/001/6248/1648502_std/1648502_dx_1500_400.jpg"/>
+		
+		
+		//承诺解决的就是地狱回调的问题 Promise  
+		<script type="text/javascript">
+			function loadImage(){
+				return new Promise(function(resolve,reject){
+					var imgDoms = document.images;
+					for (var i = 0; i < imgDoms.length; i++) {
+						imgDoms[i].onload = function(){
+							resolve();
+						};
+						imgDoms[i].onerror = function(){
+							reject(this);
+						};
+						
+					}
+				});
+			};
+			
+			/*loadImage().then(function(){
+				alert("成功");
+			}).catch(function(){
+				this.src = "error.jpg";
+			})*/
+			  
+			
+			loadImage().then(function(){
+				alert("成功");
+			}).catch(function(){
+				alert("error");
+			});
+		</script>
+		
+	</body>
+</html>

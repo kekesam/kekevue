@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		
+		<section ui-view></section>
+		<section ui-view="banner"></section>
+		<section ui-view="course-top"></section>
+		<section ui-view="course-live"></section>
+		<section ui-view="course-search"></section>
+		<section ui-view="news-detail"></section>
+		
+		<script type="text/javascript">
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	$urlRouterProvider.when("","/index");
+			 	
+			 	$stateProvider.state("index",{
+			 		url:"/index",
+			 		views:{
+			 			"":{
+			 				template:"<h1>{{title}}</h1><a ui-sref='index.detail'>子页面</a><div ui-view></div>",
+			 				controller:function($scope){
+			 					$scope.title = "首页";
+			 				}
+			 			},
+			 			"banner":{
+			 				template:"<h1 ng-if='hide==1'>{{title}}</h1>",
+			 				controller:function($scope){
+			 					$scope.hide = 1;//从数据里面来
+			 					$scope.title = "Bannerbox";
+			 				}
+			 			},
+			 			"course-top":{
+			 				template:"<h1>{{title}}</h1>",
+			 				controller:function($scope){
+			 					$scope.title = "course-top";
+			 				}
+			 			},
+			 			"course-live":{
+			 				template:"<h1>{{title}}</h1>",
+			 				controller:function($scope){
+			 					$scope.title = "course-live";
+			 				}
+			 			},
+			 			"course-search":{
+			 				template:"<h1>{{title}}</h1>",
+			 				controller:function($scope){
+			 					$scope.title = "course-search";
+			 				}
+			 			},
+			 			"news-detail":{
+			 				template:"<h1>{{title}}</h1>",
+			 				controller:function($scope){
+			 					$scope.title = "news-detail";
+			 				}
+			 			}
+			 		}
+			 	}).state("index.detail",{
+			 		url:"/detail",
+			 		template:"<h1>子页面</h1>"
+			 	});
+			 });
+		</script>
+		
+	</body>
+</html>

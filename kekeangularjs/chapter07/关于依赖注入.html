@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<img src="c.jpg"/>
+		
+		<!--不可见-->
+		<div ng-controller="TestController">
+			<div>factoryService：{{factoryService}}</div>
+			<div>constantService：{{constantService}}</div>
+			<div>valueService：{{valueService.username}}</div>
+			<div>serviceService：{{serviceService}}</div>
+			<div>providerService：{{providerService}}</div>
+		</div> 
+		
+		<script type="text/javascript">
+			//http://blog.csdn.net/xyphf/article/details/53929598
+			
+			var myApp=angular.module("exampleApp", []);
+	        
+	        myApp.constant("constantService","keke");
+	        myApp.value("valueService",{username:"keke"});
+	        myApp.factory("factoryService",function(){
+	        	return "jjwljerklwje";
+	        });
+	        myApp.service("serviceService",function(){
+	        	return {address:"长沙"};
+	        });
+	        
+	        myApp.provider("providerService",function(){
+	        	 return {
+			        bolInt : false,
+			        int : function(argBol){//取整方法
+			            if(argBol){
+			                this.bolInt = true;
+			            }else{
+			                this.bolInt = false;
+			            }
+			        },
+			        $get : function(){
+			            var This = this;
+			            return function(num1,num2){
+			                return This.bolInt ? Math.round(Math.random()*(num2 - num1)) + num1 : Math.random()*(num2 - num1) + num1;
+			            };
+			        }
+			    };  
+	        });
+	        
+	        
+	        //初始服务--注入不进来
+	        // myApp.config(function(factoryService,constantService){
+	        	//console.log("factory====>"+factoryService);
+	        //});
+	        /* value也注入不进去
+	        myApp.config(function(valueService){	
+	        	console.log("value====>"+valueService);
+	        });*/
+	        
+	        myApp.config(function(constantService,providerServiceProvider){	
+	        	console.log("1:constant====>"+constantService);
+	        	providerServiceProvider.bolInt = true;
+	        	console.log("2:provider====>"+providerServiceProvider.bolInt);
+	        });
+	        
+	        //控制器注入
+	        myApp.controller("TestController",function(providerService,serviceService,valueService,factoryService,constantService,$scope){
+	        	$scope.factoryService = factoryService;
+	        	$scope.constantService = constantService;
+	        	$scope.valueService = valueService;
+	        	$scope.serviceService = serviceService;
+	        	$scope.providerService = providerService(1,9);
+	        });
+	        
+	        
+	        /*
+	        	 注意事项： 
+				1、自定义的服务，尽量不要用美元符号开头；因为以美元符号开始的都是内部服务 
+				2、一般情况下自定义服务写在内部服务的后面
+				
+				AngularJS除了factory与provider之外还有些不常用的自定义服务 
+				模块间的通信 
+				-service() 
+				-针对面向对象的，构造函数的服务
+				constant() 
+				-设置常量 
+				constant和value都是用来设置常量的，他们的区别是constant方法是可以通过config方法配置获取的，而value方法是不可以通过配置获取的；
+	         	value() 
+				- 区别
+				
+				总结： 
+				①factory方法是不能用config方法进行初始化配置的，而provider是可以使用config方法进行初始化配置的 
+				②factory方法可以在多次调用 
+				③service方法是针对面向对象，构造函数的自定义服务 
+				④constant方法与value方法都是用来设置常量的，但是constant方法可以通过config方法进行初始化配置，而value方法不可以进行初始化配置
+				
+				
+				所有的供应商都只被实例化一次，也就说他们都是单例的
+				除了constant，所有的供应商都可以被装饰器(decorator)装饰
+				value就是一个简单的可注入的值
+				service是一个可注入的构造器
+				factory是一个可注入的方法
+				decorator可以修改或封装其他的供应商，当然除了constant
+				provider是一个可配置的factory
+	         * */
+	        
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html ng-app="myth">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../js/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js" ></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/resource.js"></script>
+	</head>
+	<body class="bg-warning">
+		<div class="container" ng-controller="pce">
+			<h1 class="page-header">省市区联动</h1>
+			<div class="form-inline">
+				<div class="input-group">
+					<span class="input-group-addon">选择地址:</span>
+					
+					<select ng-model="p" class="form-control" ng-options="pdata.sheng as pdata.name for pdata in data | filter:{level:1}">
+						<option value="">--请选择--</option>
+					</select>
+					
+					<span class="input-group-addon">-</span>
+					
+					<select ng-model="c" class="form-control" ng-options="cdata.di as cdata.name for cdata in data | filter:{level:2,sheng:p}">
+						<option value="">--请选择--</option>
+					</select>
+					
+					<span class="input-group-addon">-</span>
+					<select ng-model="e" class="form-control" ng-options="edata.xian as edata.name for edata in data | filter:{level:3,sheng:p,di:c}">
+						<option value="">--请选择--</option>
+					</select>
+				</div>
+			</div>
+			<div>选择的地区code是:{{p+c+e}}</div>
+		</div>
+		<script>
+			var mythController =angular.module("myth",[]);
+			mythController.controller("pce",function($scope,$rootScope,$log){
+				$scope.data=p_c_e;
+				$scope.p="";
+				$scope.c="";
+				$scope.e="";
+				//当主体发生变化，重置子类的值
+				$scope.$watch("p",function(){
+					$scope.c="";
+					$scope.e="";
+				});
+				$scope.$watch("c",function(){
+					$scope.e="";
+				});
+			});
+		</script>
+	</body>
+</html>

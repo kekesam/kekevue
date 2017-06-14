@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		<!--不可见-->
+		<div ng-controller="XingController">
+			<div ng-show="show">ng-show显示出来了</div>
+			<div ng-hide="show">ng-hide隐藏出来了</div>
+			<div ng-if="show">ngif显示出来了</div>
+			<input type="text" ng-disabled="show"/>
+			
+			
+			
+			
+			<div ng-switch on="30">
+				<span ng-switch-default>老年</span>
+				<span ng-switch-when="30">青年</span>
+				<span ng-switch-when="40">壮年</span>
+				<span ng-switch-when="60">老年</span>
+			</div>
+			
+			<div ng-switch on="true">
+				<span ng-switch-when="true">不大于</span>
+				<span ng-switch-when="false">大于</span>
+			</div>
+			
+			
+			
+			<!--
+            	作者：xuchengfeifei@163.com
+            	时间：2017-05-13
+            	
+            	1:描述：ng-model="属性名".自动绑定在$scope中，如果改变form元素的值或者状态
+            	改变值：input password textarea
+            	改变状态：raido checkbox select
+            	都讲改变的值和状态回传掉$scope.属性名 = 值和状态(true/false)
+            	2:angularjs监听，$scope对象是否发现变化，如果变化，重绘控制器中视图。
+            -->
+			<input type="checkbox" ng-model="show" />
+			
+		</div>
+		
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.controller("XingController",function($scope){
+				$scope.show = false;
+			});
+		</script>
+	</body>
+</html>

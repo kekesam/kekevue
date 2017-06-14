@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body ng-init="username='小欣欣';address='长沙';">
+		
+		
+		<ul ng-controller="TestController">
+			<li ng-repeat="room in classroom">
+				{{room.name}}===>{{room.age}}----->{{username}}	---{{address}}			
+			</li>
+		</ul>
+		
+		===>{{username}}
+		
+		<script type="text/javascript">
+			
+			
+			
+			//初始化一个angularjs的一个代理对象
+			var app = angular.module("myapp",[]);
+			app.controller("TestController",function($scope,$rootScope,$log){
+				$scope.classroom = [
+					{name:"柯柯",age:"30"},
+					{name:"王康",age:"18"},
+					{name:"小心",age:"20"},
+					{name:"小清",age:"21"}
+				];
+				$scope.username = "keke";
+			});
+			
+			//MVC--springmvc  webwordk struts2
+			//angularjs
+			//mvc---不他什么代码，它是编写的一种设计理念，分层理念
+			//逻辑变得更加清晰，维护更加方便。耦合性更低
+			
+			
+			
+			//视图，数据（作用域），控制器
+			/*
+				ng-init:初始化数据?$rootScope全局对象，这里内容可以被ng-app管辖范围任何地方使用。
+				ng-init：数据的初始化一定早于控制器。
+				
+				ng-repeat:迭代数组和对象，语法，循环(for)的意思。
+				<div ng-repeat="变量  in 对象/数组">
+				
+				</div>
+				Angularjs双向数据绑定：能够帮助web前端前端开发人员很大程度上减少对dom元素的操作。
+				
+			 */
+		</script>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于指令-directive</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		
+		<style type="text/css">
+			*{padding:0;margin:0;}
+			body{padding:100px;}
+			.search{background:#ccc;border:1px solid #eee;width:260px;margin:10px 0;}
+			.search input{border:0 ;height:26px;line-height: 26px;width:200px;outline:none;text-indent: 0.5em;}
+			.search button{height:26px;width:60px;border:0;}
+		</style>
+		
+		
+	</head>
+	<body>
+		
+		
+		
+		
+		<keke-search></keke-search><!-- E -->
+		<div class="keke-search"></div><!-- C -->
+		<div keke-search></div><!-- A -->
+		<div data-keke-search></div><!-- A -->
+		
+		
+		<script type="text/javascript">
+			
+			//初始化angularjs对象
+			var app = angular.module("myapp",[]);
+			//app.directive("指令的名称",fn)
+			//注意点：如果是：search---<search></search>
+			//名字：kekeSearch ----<keke-search></keke-search>
+			app.directive("kekeSearch",function(){
+				return {
+					restrict:"ECA",//定义指令的类型  E --element C:class
+					template:"",
+					replace:true/*replace的设定，代表template模板是否替换宿主标签*/
+				};
+			});
+			
+		</script>
+		
+	</body>
+</html>

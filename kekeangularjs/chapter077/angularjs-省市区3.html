@@ -1,0 +1,96 @@
+<!DOCTYPE html>  
+<html ng-app="myapp">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>前端研究</title>  
+    <script type="text/javascript" src="../bower_components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/resource.js"></script>
+    <style>
+    	 ul,li{list-style:none;margin:0;padding:0;}
+    	 body{font-size:12px;}
+    	.cbox,.pbox{width:240px;border:1px solid #ccc;float:left;overflow: hidden;margin-right:10px;}
+    	li{padding:4px;background:#ccc;margin-bottom: 1px;}
+    	li.on{background:red;color:#fff;}
+    </style>
+</head>  
+<body>  
+    <div class="container" ng-controller="PController">  
+        <h1 class="text-center text-danger">Angular 地址联动示例</h1>  
+        <div class="form-horizontal">  
+            <div class="form-group">
+            	<div class="pbox">
+            		<h1>省:</h1>
+            		<ul>
+            			<li ng-click="changeCity($event,data.sheng)" title="{{data.name}}" ng-repeat="data in division | filter:{level:1}">{{data.sheng}}==={{data.code}}==={{data.name}}</li>
+            		</ul>
+            	</div>
+            </div>  
+        	<div class="cbox">
+        		<h1>市：</h1>
+        		<ul>
+        			<li ng-click="changeArea($event,data.sheng,data.di)" title="{{data.name}}" ng-repeat="data in division | filter:{level:2,sheng:sheng}">{{data.sheng}}==={{data.code}}==={{data.name}}</li>
+        		</ul>
+        	</div>
+        	<div class="acbox cbox">
+        		<h1>区：</h1>
+        		<ul>
+        			<li ng-click="changeValue($event)" data-sheng="{{data.di}}" title="{{data.name}}" ng-repeat="data in division | filter:{level:3,sheng:sheng,di:di}">{{data.sheng}}==={{data.code}}==={{data.name}}</li>
+        		</ul>
+        	</div>
+        	<div>{{result.join("》")}}</div>
+        </div>  
+    </div> 
+    
+    <script type="text/javascript">
+    	//路由（router,ui-router）
+    	//依赖注入
+    	//过滤器，指令
+    	//自定义module
+    	//服务$http,promise
+     	var app = angular.module("myapp",[]);
+     	app.controller("PController",function($scope){
+     		$scope.division = division;
+     		$scope.sheng = "11";
+     		$scope.di = "01";
+     		var arr = [];
+     		$scope.result = [];
+     		$scope.changeCity = function(e,sheng){
+     			if(!angular.element(e.target).hasClass("on")){
+     				angular.element(e.target).addClass("on").siblings().removeClass("on");
+     				$scope.sheng = sheng;
+     				$scope.result[0] = angular.element(e.target).attr("title");
+     				$scope.result.splice(1,1);
+     				$scope.result.splice(2,1);
+     			}
+     		};
+     		
+     		$scope.changeArea = function(e,sheng,di){
+     			if(!angular.element(e.target).hasClass("on")){
+	     			angular.element(e.target).addClass("on").siblings().removeClass("on");
+	     			$scope.sheng = sheng;
+	     			$scope.di = di;
+	     			$scope.result[1] = angular.element(e.target).attr("title");
+	     			$scope.result.splice(2,1);
+     			}
+     			
+     			//额外的这种绑定事件，
+     			/*$(".acbox").on("click","li",function(){
+     				if(!$(this).hasClass("on")){
+     					$scope.result[2] = $(this).attr("title");
+     					$scope.$digest();//重新将作用域渲染视图
+     					$(this).addClass("on").siblings().removeClass("on");
+     				}
+     			});*/
+     		};
+     		
+     		$scope.changeValue = function(e){
+     			if(!angular.element(e.target).hasClass("on")){
+	     			angular.element(e.target).addClass("on").siblings().removeClass("on");
+	     			$scope.result[2] = angular.element(e.target).attr("title");
+     			}
+     		};
+     	});
+    </script>
+</body>  
+</html>  

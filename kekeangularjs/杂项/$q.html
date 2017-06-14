@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于$q的承诺问题</title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="AppController">
+			<a href="javascript:void(0);" id="clickme" ng-click="clickme()">点我</a>
+			<h1>{{message}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",["ui.router"]);
+			app.controller("AppController",function($scope,$location,$window,$state){
+				$scope.clickme = function(){
+				};
+			});
+		</script>
+	</body>
+</html>

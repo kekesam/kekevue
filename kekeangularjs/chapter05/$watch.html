@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-高级特性</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+		<style>
+			.red{color: red;}
+			.green{color:green;}
+		</style>
+	</head>
+	<body>
+		
+		<input type="text" ng-model="username"/>
+		{{username}}
+		<p>改变的次数是:{{count}}</p>
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			//主要作用就是代表angularjs装载完毕某一些内置对象的时候,可能会执行以下回调函数，回调就初始化代码
+			/*app.run(function($rootScope){
+				$rootScope.username = "keke";
+			});*/
+			
+			app.run(["$rootScope","$log",function($rootScope,$log){
+				$rootScope.username = "keke";
+				$rootScope.count = 0;
+				
+				$rootScope.$watch("username",function(){
+					$rootScope.count++;
+				});
+			}]);
+			
+		</script>
+	</body>
+</html>

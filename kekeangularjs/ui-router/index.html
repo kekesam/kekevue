@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		<style type="text/css">
+			.active{color:red;}
+		</style>
+	</head>
+	<body>
+		
+		<h1>ui-router如下：</h1>
+		<div class="container">
+			<a  ui-sref-active="active" ui-sref="home">Home</a> | 
+			<a ui-sref-active="active"  ui-sref="about">About</a> | 
+			<a ui-sref-active="active"  ui-sref="contacts{page: 2}">Next page</a>
+			<ul>
+			    <li ng-repeat="contact in contacts">
+			        <a ui-sref="contacts.detail({ id: contact.id })">{{ contact.name }}</a>
+			    </li>
+			</ul>
+		</div>
+		<hr />
+		<h1>如果是htmlmode的方式访问的话如下：</h1>
+		<div class="container">
+			<a href="#!/home" ui-sref-active="active"  ui-sref="home">Home</a> | 
+			<a href="#!/about" ui-sref-active="active" ui-sref="about">About</a> | 
+			<a href="#!/contacts?page=2" ui-sref-active="active" ui-sref="contacts{page: 2}">Next page</a>
+			<ul>
+			    <li ng-repeat="contact in contacts">
+			        <a href="#/contacts/1" ui-sref="contacts.detail({ id: contact.id })">Joe</a>
+			    </li>
+			    <li ng-repeat="contact in contacts">
+			        <a href="#/contacts/2" ui-sref="contacts.detail({ id: contact.id })">Alice</a>
+			    </li>
+			    <li ng-repeat="contact in contacts">
+			        <a href="#/contacts/3" ui-sref="contacts.detail({ id: contact.id })">Bob</a>
+			    </li>
+			</ul>
+		</div>
+		<!--<a ui-sref="home" ui-sref-opts="{reload: true}">Home</a>-->
+		
+		<!-- 没有名字的 -->
+		<div ui-view></div>
+		<!-- 有名字的视图 -->
+		<div ui-view="about"></div>
+		
+		<script type="text/javascript">
+			var myApp = angular.module("myapp", ["ui.router"]);
+			/*myApp.run(function($rootScope, $urlRouter) {
+			    $rootScope.$on('$locationChangeSuccess', function(evt) {
+			    	console.log($urlRouter);
+			    });
+			});*/
+			
+			myApp.config(function ($stateProvider, $urlRouterProvider) {
+			  	$urlRouterProvider.when("", "/home");
+			   /*
+			    * 如果没有名字的视图的指向都是写入到ui-view没有名字的上方，和router其实是差不多的。
+			    * $stateProvider.state("home", {
+			    	* 
+				  template: "<h1>HELLO!</h1>"
+			   });*/
+			  
+			  /*
+			   
+			   * Usage:
+			    	//无参的情况下用这个state的名字
+					ui-sref='stateName' - Navigate to state, no params. 'stateName' can be any valid absolute or relative state, following the same syntax rules as $state.go()
+					//传递参数的时候用此state的名字
+					ui-sref='stateName({param: value, param: value})' - Navigate to state, with params.
+			   * */
+			   
+			   // $stateProvider.state(访问路径的名称,{template:"",controller:function($scope){}});
+			   $stateProvider.state("home", {
+				  views: {
+				    "": {
+				    	controller:function($scope){
+				   	  		$scope.title = "Hello World";
+				   	  	},
+				      	template: "<h1>{{title}}</h1>"
+				    },
+				    "chart": {
+				      template: "<chart_thing/>"
+				    },
+				    "data": {
+				      template: "<data_thing/>"
+				    }
+				  }    
+				}).state("about",{
+					views:{
+						"about":{
+							controller:function($scope){
+					   	  		$scope.title = "Hello World  About";
+					   	  	},
+					      	template: "<h1>{{title}}</h1>"
+						}
+					}
+				}).state("contacts",{
+					controller:function($scope,$stateParams){
+						$scope.title = "Page Test";
+						console.log("参数是："+$stateParams.page);	
+					},
+					template:"<div>page:{{title}}</div>"
+				});
+				
+			});
+		</script>
+	</body>
+</html>

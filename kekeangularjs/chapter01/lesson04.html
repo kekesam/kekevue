@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{username}}Angularjs1.6入门-Hello World</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	
+	<body ng-init="username='keke';age=30">
+	
+		{{username}}
+		{{age}}
+		
+		<div ng-init="person = {username:'keke',age:30}"></div>
+		{{person.username}}
+		{{person.age}}
+		
+		
+		<div ng-init="arr = [1,2,3,4,5,6,7,8,9,10]"></div>
+		<ul ng-repeat="c in arr">
+			{{c}}	
+		</ul>
+		<h1>数组第一个元素:{{arr[0]}}</h1>
+		<h1>数组长度：{{arr.length}}</h1>
+		<h1>数组最后元素:{{arr[arr.length-1]}}</h1>
+		
+		
+		
+		<div ng-init="carr = [{username:'keke',age:30},{username:'小李子',age:20}]"></div>
+		<ul ng-repeat="c in carr">
+			<li>{{c.username}}--->{{c.age}}</li>	
+		</ul>
+		<h1>数组第一个元素:{{carr[0].username}}</h1>
+		<h1>数组长度：{{carr.length}}</h1>
+		<h1>数组最后元素:{{carr[carr.length-1].username}}</h1>
+		
+		
+		<script type="text/javascript">
+			
+			/*
+			 	1：表达式和作用域
+			 	ng-init:该指令初始化一些作用域的数据，它的数据挂载到全局作用域.$rootScope
+			 	
+			 */
+			
+			
+			
+		</script>
+	</body>
+</html>

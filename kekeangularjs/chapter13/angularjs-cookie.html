@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css"/>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-cookies.min.js"></script>
+		<style type="text/css">
+			.container{margin-top: 50px;}
+		</style>
+	</head>
+	<body>
+		
+		<div class="container" ng-controller="LoginController">
+			<form action="#" method="post" class="form-horizontal">
+				<div class="form-group">
+					<label for="username" class="col-sm-2 control-label">用户名：</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" ng-model="username" id="username"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">密码：</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" ng-model="password" id="password"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+						<input type="checkbox" checked="" name="" id="loginDate"  />
+						<label for="loginDate" class="col-sm-2 control-label">7天自动登录</label>
+					</div>
+				</div>
+				<div >
+					<a class="btn btn-info" ng-click="wirteCookie()">写入</a>
+					<a class="btn btn-success" ng-click="readCookie()">读取</a>
+					<a class="btn btn-warning" ng-click="delCookie()">删除</a>
+				</div>
+				<h1 id="result">用户名是：{{data.username}}密码是：{{data.password}}</h1>
+			</form>
+			
+		<!--	
+			<label>用户名：<input type="text"/></label>
+			
+			<label for="age">年龄</label>
+			<input type="text" id="age"/>
+			-->
+		</div>
+		
+		
+		<script type="text/javascript">
+			
+			var app = angular.module("myapp",["ngCookies"]);
+			
+			app.config(function($cookiesProvider){
+				var date = new Date();
+				date.setDate(date.getDate()+7);
+				$cookiesProvider.defaults = {
+					expires:date.toGMTString()
+				};
+			});
+			
+			app.controller("LoginController",function($scope,$cookieStore){
+				//写入
+				$scope.wirteCookie = function(){
+					//jquery.js引入在angulajs.js前面的话，那么所有angular.element会自动变成jquery对象.
+					//var username = angular.element("#username").val();//$("#username").val();
+					//var password = angular.element("#password").val();//$("#password").val();
+					//var username = $("#username").val();
+					//var password = $("#password").val();
+					var username = $scope.username;
+					var password = $scope.password;
+					var data = {username:username,password:password};
+					$scope.data = data;
+					$cookieStore.put("mkData",angular.toJson(data));
+				};
+				
+				//读取
+				$scope.readCookie = function(){
+					var jsonString = $cookieStore.get("mkData");
+					$scope.data = angular.fromJson(jsonString);
+				};
+				
+				//删除
+				$scope.delCookie = function(){
+					$cookieStore.remove("mkData");
+					$scope.data = {};
+				};
+				
+			});
+			
+			
+		</script>
+		
+	</body>
+</html>

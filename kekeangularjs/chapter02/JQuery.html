@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../bower_components/jquery/jquery.min.js"></script>
+	</head>
+	<body>
+		
+		<ul id="ullist">
+			
+		</ul>
+		
+		<script type="text/javascript">
+			/*
+			 一个教室有3个学生：分别是keke 31,wangkang 18,小心 20
+			 * */
+			/*var keke = {name:"柯柯",age:"30"};
+			var wangke = {name:"王康",age:"18"};
+			var xiaoxin = {name:"小心",age:"20"};
+			var classroom = [keke,wangke,xiaoxin];*/
+			
+			var classroom = [
+				{name:"柯柯",age:"30"},
+				{name:"王康",age:"18"},
+				{name:"小心",age:"20"},
+				{name:"小清",age:"21"}
+			];
+			
+			
+			
+			//获取到dom元素
+			/*var ullistDom = document.getElementById("ullist");
+			for (var i = 0; i < classroom.length; i++) {
+				var liDom = document.createElement("li");
+				liDom.innerHTML = classroom[i].name+"==="+classroom[i].age;
+				ullistDom.appendChild(liDom);
+			}*/
+			
+			//jquery
+			var $ullistDom = $("#ullist");
+			for (var i = 0; i < classroom.length; i++) {
+				var $liDom = $("<li>");
+				$liDom.html(classroom[i].name+"==="+classroom[i].age);
+				$ullistDom.append($liDom);
+			}
+			
+		</script>
+		
+	</body>
+</html>

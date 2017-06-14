@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css"/>
+		<script type="text/javascript" src="js/cookie.js"></script>
+		<style type="text/css">
+			.container{margin-top: 50px;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<!--//Storage===SessionStorage,LocalStorage
+		
+		//cookie
+		//用来存储浏览器一些基础的数据。
+		
+		
+		//1:cookie会消耗带宽请求，无形给我服务器造成压力.
+		//缺陷：http请求中cookie的保存的数据是明文，存在一些安全性问题,最好加密(MD5 js des加密解密算法)
+		//3:cookie浏览器的大小一般限制在4kb左右，对于一些复杂的数据文本存就不够用了-->
+		
+		<div class="container">
+			<form action="#" method="post" class="form-horizontal">
+				<div class="form-group">
+					<label for="username" class="col-sm-2 control-label">用户名：</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="username"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">密码：</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="password"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-10">
+						<input type="checkbox" checked="" name="" id="loginDate"  />
+						<label for="loginDate" class="col-sm-2 control-label">7天自动登录</label>
+					</div>
+				</div>
+				<div >
+					<a class="btn btn-info" onclick="wirteCookie()">写入</a>
+					<a class="btn btn-success" onclick="readCookie()">读取</a>
+					<a class="btn btn-warning" onclick="delCookie()">删除</a>
+				</div>
+				<h1 id="result"></h1>
+			</form>
+			
+		<!--	
+			<label>用户名：<input type="text"/></label>
+			
+			<label for="age">年龄</label>
+			<input type="text" id="age"/>
+			-->
+		</div>
+		
+		
+		<script type="text/javascript">
+			//cookie----document.cookie
+			function wirteCookie(){
+				var checked = document.getElementById("loginDate").checked;
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("password").value;
+				if(checked){
+					var data = {username:username,password:password};
+					tmCookie.setCookie("mklogindata",JSON.stringify(data),"d14")
+				}
+				
+				//$.ajax({})登录去
+			};
+			
+			
+			function readCookie(){
+				var userData = tmCookie.getCookie("mklogindata");
+				if(userData){
+					var data =JSON.parse(userData);
+					document.getElementById("result").innerHTML = "用户名是："+data.username+"==密码是："+data.password;
+				}else{
+					document.getElementById("result").innerHTML = "cookie已被删除";
+				}
+			};
+			
+			function delCookie(){
+				tmCookie.delCookie("mklogindata");
+			}
+			
+			
+			
+		</script>
+		
+	</body>
+</html>

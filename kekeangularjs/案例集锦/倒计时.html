@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>计算器</title>
+		<link rel="stylesheet" href="bootstrap.css" />
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-controller="timeBackController">
+			距离 儿童节还有：{{days}}天{{hour}}时{{min}}分{{sec}}秒
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			app.factory("timeBack",function(){
+				return {
+					format:function(num){
+						if(num<10)num = "0"+num;
+						return num;
+					},
+					time:function(dateString,callback){
+						//获取今天的日期 ,2017年10月1号国庆节距离今天还有多少天，多少小时，多少分钟，多少秒
+						var now = new Date();
+						//今年国庆日期 
+						var endDate = new Date(dateString.replace(/-/g,"/"));
+						//获取到毫秒数 1秒=1000毫秒
+						var stime = endDate.getTime() - now.getTime();
+						//获取两个日期的秒数
+						var second = stime / 1000; 
+						//计算剩下多少天
+						var days =  parseInt(second /60 / 60 / 24); 
+						//剩余多少小时
+						var hours = parseInt(second / 60 / 60 % 24);  
+						//剩余多少分钟
+						var minutes = parseInt(second / 60 % 60); 
+						//剩余多少秒
+						var seconds = parseInt(second % 60); 
+						callback && callback(this.format(days),this.format(hours),this.format(minutes),this.format(seconds));
+					}
+				};
+			});
+			
+			
+			app.controller("timeBackController",function($scope,$interval,timeBack){
+				$interval(function(){
+					timeBack.time("2017-06-01",function(day,hour,min,sec){
+						$scope.days = day;
+						$scope.hour = hour;
+						$scope.min = min;
+						$scope.sec = sec;
+					});
+				},1000);
+			});
+		</script>
+	</body>
+</html>

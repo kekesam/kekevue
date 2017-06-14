@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<meta charset="UTF-8">
+		<title>ng-class指令</title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/angular.min.js"></script>
+		<script type="text/javascript" src="../js/angular-ui-router.min.js"></script>
+	</head>
+	<body>
+		
+		<a ui-sref="cdetail">课程详情2</a>
+		<section ui-view></section>
+		<!--<ui-view></ui-view>-->
+		<script type="text/javascript">
+			 //第一步引入：angular-ui-router.min.js
+			 //第二步： var myApp = angular.module("myApp", ["ui.router"]); 注入：ui.router的模块
+			 //第三步：定义视图存放的视图位置:<div ui-view></div>
+			 var myApp = angular.module("myApp", ["ui.router"]);
+			 myApp.config(function($stateProvider,$urlRouterProvider){
+			 	//设定默认访问路径
+			 	$urlRouterProvider.when("","/home");
+			 	//如果用户访问不存在的路由指定的时候，调整制定otherwise的路由路径
+			 	$urlRouterProvider.otherwise("/about");
+			 	$stateProvider.state("cdetail",{
+			 		url:"/cdetail",
+			 		template:"<h1>{{course.title}},{{course.price}}</h1>",
+			 		/*
+			 		controller:function($stateParams){
+			 			this.title = "我是标题";
+			 			this.price = "11.58";
+			 		},
+			 		controllerAs:"course"*/
+			 		controller:"CourseController as course"
+			 	});
+			 }).controller("CourseController",function(){
+			 	//this.title = "Javascript面向对象";
+			 	//this.price = "11.58";
+			 	return {title:"Javascrpt面向对象",price:"11.58"}
+			 });
+		</script>
+		
+	</body>
+</html>

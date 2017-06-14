@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs关于过滤器的认识</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<style>
+			*{padding: 0;margin:0;}
+			body{font-size:12px;font-family: "微软雅黑";padding:10px;}
+			a{text-decoration: none;color:#333;}
+			fieldset{border:1px dotted #ccc;padding:30px;}
+			fieldset legend{padding:0 12px;}
+		</style>
+	</head>
+	<body ng-controller="ClassController">
+		
+		<fieldset id="">
+			<legend>关于过滤器</legend>
+			<h1>关于:currency过滤器方法,默认是两位小数，并且四舍五入</h1>
+			<h3>{{899.87878 | currency}}</h3>
+			<h3>{{899.87878 | currency:"￥"}}</h3>
+			<h3>{{899.87878 | currency:"￥":3}}</h3>
+			<h3>{{899.1 | currency:"￥":2}}</h3>
+		</fieldset>
+		<fieldset id="">
+			<legend>关于过滤器</legend>
+			<h1>关于:number过滤器方法,</h1>
+			<h3>{{899.87878 | number}}</h3>
+			<h3>{{899.87878 | number:1}}</h3>
+			<h3>{{899.87878 | number:2}}</h3>
+			<h3>{{899.18 | number:2}}</h3>
+			
+			<h3>{{899.18 | number:2}}</h3>
+			<h2>我的名字是：{{username | lowercase}}</h2>
+			<h2>我的名字是：{{username | uppercase}}</h2>
+		</fieldset>
+		
+		<fieldset id="">
+			<legend>关于过滤器</legend>
+			<h1>关于:date过滤器方法,</h1>
+			<h3>{{"2017-12-12"|date}}</h3>
+			<h3>{{"2017-12-12"|date:"yyyy年MM月dd日"}}</h3>
+			<h3>{{"2017-12-12T23:45:00" | date:"yyyy年MM月dd日  HH:mm:ss"}}</h3>
+			<h3>{{now}}====>{{now|date:"yyyy年MM月dd日 EEEE HH:mm:ss"}}</h3>
+			<h3>{{now2}}===>{{now2|date:"yyyy年MM月dd日 EEE HH:mm:ss"}}</h3>
+			<h3>{{now|date:'fullDate'}}</h3>
+			<h3>{{now|date:'short'}}</h3>
+			<h3>{{now|date:'M/d/yy h:mm a'}}</h3>
+		</fieldset>
+		
+		
+		<fieldset id="">
+			<legend>关于过滤器</legend>
+			<h1>关于:limitTo过滤器方法,</h1>
+			<h3>{{"abcdefg"|limitTo:3}}</h3>
+			<h3>{{[1,2,3,4,5,6,7,8,9]|limitTo:3}}</h3>	
+		</fieldset>
+			
+		
+		
+		
+		<!--
+			1：angularjs
+			1:做一个日期倒计时。
+			2:做个万年历
+        -->
+		
+		<script type="text/javascript">
+			
+			/*
+			 * filter:筛选的意思(就给数据加过滤条件)，过滤表达式中数据的一种机制
+			 * 相关性：表达式，和作用域
+			 * 相关知识点：$filter,$filterProvider
+			 * 
+			 * 1：单个过滤器 
+			 * {{data|过滤器的名字}}
+			 * 2：多个过滤器 
+			 * {{data|过滤器1|过滤器2|过滤器3|.....}}
+			 * 3：带参数的过滤器
+			 * {{data|过滤器1:参数1：参数2}}
+			 * 
+			 */
+			
+			angular.module("myapp",[]).controller("ClassController",function($scope){
+				$scope.username = "kEkE";
+				$scope.now = new Date();
+				$scope.now2 = new Date().getTime();
+			});
+		</script>
+	</body>
+</html>

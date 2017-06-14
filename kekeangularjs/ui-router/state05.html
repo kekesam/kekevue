@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="contacts">联系我们</a>
+	<a ui-sref="course">课程</a>
+	<a ui-sref="coursec">课程c</a>
+    <section ui-view></section>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+    	
+    	
+    	myApp.run(function($rootScope){
+    		//状态加载开始执行回调函数
+    		$rootScope.$on("$stateChangeStart",function(event,toParams, fromState, fromParams, options){
+    			console.log("1:$stateChangeStart");
+    		});
+    		
+    		//状态加载开始执行回调函数
+    		$rootScope.$on("$stateNotFound",function(event, unfoundState, fromState, fromParams){ 
+			  	console.log("2:找不到视图执行的监听");
+			  	console.log(unfoundState.to); // "lazy.state"
+			    console.log(unfoundState.toParams); // {a:1, b:2}
+			    console.log(unfoundState.options); // {inherit:false} + default options
+			});
+			    		
+    		//状态加载开始执行回调函数
+    		$rootScope.$on("$stateChangeSuccess",function(event, toState, toParams, fromState, fromParams){
+    			console.log("3:$stateChangeSuccess");
+    		});
+    		
+    		//状态加载开始执行回调函数
+    		$rootScope.$on("$stateChangeError",function(event, toState, toParams, fromState, fromParams, error){
+    			console.log("4:$stateChangeError");
+    		});
+    		
+    		
+    		$rootScope.$on('$viewContentLoading', function(event, viewConfig){ 
+    			console.log("视图内容加载中....");
+			});
+    	});
+    	
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+			/*4秒以后在渲染视图*/
+			$stateProvider.state('contacts', {
+			  url:"/contacts",	
+			  template:"<div>{{contact.title}}=={{contact.link}}</div>",
+			  controller:function($scope){
+			  	//this.title = "Hello UI Router";
+			  	$scope.$on('$viewContentLoaded', function(event){
+					console.log("视图内容加载完毕....");
+				});
+			  	return {title:"Hello UI Router",link:"水电费阿斯蒂芬爱上"}
+			  },
+			  controllerAs: 'contact'
+			}).state("course",{
+				url:"/course",	
+				template:"<div>{{course.title}}</div>",
+				controller:"CourseController as course"
+			});
+		}).controller("CourseController",function(){
+			//this.title = "我是一个课程Java 面向对象";
+			return {title:"我是一个课程Java 面向对象"};
+		});
+    </script>
+</body>
+<html>

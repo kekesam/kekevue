@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div id="box">
+			23423423
+		</div>
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.run(function($window,$document,$log){
+				//$window==window
+				//$log==window.console;
+				//$window.alert(1);
+				//$document[0] ==window.document
+				//var html = $document[0].getElementById("box").innerHTML;
+				//$document---angularjs jqlite对象
+				//alert(html);
+			});
+		</script>
+	</body>
+</html>

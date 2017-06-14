@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<div class="result">
+			<ul id="ullist">
+				
+			</ul>
+		</div>
+		<script type="text/javascript">
+			
+			var datas =  [
+				{id:1,name:"柯柯",sex:"男",price:22.69},
+				{id:2,name:"柯柯1",sex:"男",price:88.69},
+				{id:3,name:"柯柯2",sex:"女",price:12.69},
+				{id:4,name:"柯柯3",sex:"女",price:102.629},
+				{id:5,name:"柯柯4",sex:"男",price:120.69},
+				{id:6,name:"柯柯5",sex:"女",price:312.69},
+				{id:7,name:"柯柯6",sex:"男",price:12.69}
+			];
+			
+			function orderBy(field,sortmark){
+				datas.sort(function(a,b){
+					return !sortmark?a[field] - b[field]:b[field]-a[field];
+				});
+			}
+			
+			//排序器
+			orderBy("id",false);
+			
+			var html = "";
+			datas.forEach(function(data){
+				html+="<li>"+data.id+"=="+data.name+"==="+data.price+"</li>";
+			});
+			
+			document.getElementById("ullist").innerHTML = html;
+			
+			
+			
+			
+			
+				
+				
+			
+		</script>	
+		
+	</body>
+</html>

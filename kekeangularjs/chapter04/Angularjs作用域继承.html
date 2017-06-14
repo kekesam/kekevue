@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+	
+		<div ng-controller="OutController">
+			<h1>{{username}}</h1>
+			<div ng-controller="InnerController">
+				<h1>{{username}}{{realname}}</h1>
+			</div>
+			
+			<div ng-controller="InnerController2">
+				<h1>{{username}}{{realname}}</h1>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			
+			var app =angular.module("myapp",[]);
+			
+			app.controller("OutController",function($scope){
+				$scope.username = "徐";
+			});
+			
+			
+			app.controller("InnerController",function($scope){
+				$scope.realname = "成飞";
+			});
+			
+			app.controller("InnerController2",function($scope){
+				$scope.realname = "柯柯";
+			});
+		</script>
+	</body>
+</html>

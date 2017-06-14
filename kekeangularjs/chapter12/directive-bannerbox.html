@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title>关于指令-directive--重要属性-link</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+		
+		<style type="text/css">
+			*{padding:0;margin:0;}
+			body{font-family: "微软雅黑";font-size: 12px;}
+			ul li{list-style:none;}
+			a{text-decoration: none;color:#333;}
+			.mk_diretive_banner{background:red;overflow: hidden;}
+			.bannerbox{width:960px;background:red;margin:50px auto 0;height:350px;}
+			.bannerlist{position:relative;width:100%;height:100%;}
+			.bannerlist li {position:absolute;top:0;left:0;width:100%;}
+			.bannerlist li img{width: 100%;height:350px;}
+			.bannerlist li a{display: block;width: 100%;height: 350px;}
+			.bannerlist .arrow{position:absolute;top:45%;display: inline-block;width:54px;height:60px;background:yellow;
+				text-align: center;
+				line-height: 60px;
+				z-index: 11;
+			}
+			.bannerlist .next{right:0;}
+			.bannerlist .prev{left:0;}
+		</style>
+	</head>
+	<body>
+		
+		
+		<banner timer="1000" typeid="1"></banner>
+		<banner timer="2000" typeid="2"></banner>
+		<banner timer="3000" typeid="2"></banner>
+		<banner timer="4000" typeid="2"></banner>
+		<banner timer="5000" typeid="2"></banner>
+		<banner timer="6000" typeid="2"></banner>
+		<banner timer="7000" typeid="2"></banner>
+		
+		
+		<script type="text/ng-template" id="bannerTemplate">
+			<div class="bannerbox">
+				<div class="bannerlist">
+					<ul>
+						<li ng-repeat="data in datas" style="z-index: {{datas.length-$index}};"><a href="{{data.href}}" title="{{data.title}}"><img src="{{data.img}}" alt="" /></a></li>
+					</ul>
+					<a href="javascript:void(0);" ng-mouseover="over()" ng-mouseout="out()" ng-click="prev()" class="arrow prev">上一张</a>
+					<a href="javascript:void(0);" ng-mouseover="over()" ng-mouseout="out()" ng-click="next()" class="arrow next">下一张</a>
+				</div>
+				<div ng-transclude></div>
+			</div>
+		</script>		
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			app.directive("banner",function($interval,$http){
+				return {
+					restrict:"CEA",
+					templateUrl:"bannerTemplate",
+					replace:true,
+					scope:true,
+					transclude:true,
+					link:function($scope,elementDom,attrDom){
+						/*var typeid = attrDom.typeid;
+						$http.post("xxxx",{typeid:typeid}).then(function(data){
+							$scope.datas = data;
+						});*/
+						
+						/*bannerbox表:
+						
+						id img title typeid
+						1  1    1    1
+						2  2    2    1
+						
+						3  3    3    2*/
+						
+						//数据初始化
+						$scope.datas = [
+							{"id":1,"title":"1111","href":"http://www.baidu.com","img":"https://www.mengkedu.com/resource/banner/2016/10/14/201610141534151.jpg"},
+							{"id":2,title:"2222",href:"http://www.baidu.com",img:"https://www.mengkedu.com/resource/course/2017/02/18/201702181001181.jpg"},
+							{"id":3,title:"3332",href:"http://www.baidu.com",img:"https://www.mengkedu.com/resource/course/2017/02/28/201702281334432554.jpg"}
+						];
+						
+						//控制索引
+						$scope.index = 0;
+						//图片的个数
+						$scope.length = elementDom.find("li").length;
+						//拿到属性属性
+						var timer = attrDom.timer;
+						//上一张
+						$scope.prev = function(){
+							$scope.index--;
+							if($scope.index <=0)$scope.index = $scope.length-1;
+							elementDom.find("li").eq($scope.index).fadeIn("slow").siblings().fadeOut("slow");
+						};
+						
+						//下一张
+						$scope.next = function(){
+							$scope.index++;
+							if($scope.index == $scope.length)$scope.index = 0;
+							elementDom.find("li").eq($scope.index).fadeIn("slow").siblings().fadeOut("slow");
+						};
+						
+						//移入的鼠标取消动画执行
+						$scope.over = function(){
+							$interval.cancel($scope.timer);
+						};
+						
+						//移出的时候，开始动画执行
+						$scope.out = function(){
+							autoPlay();
+						};
+						
+						//自动播放
+						function autoPlay(){
+							$scope.timer = $interval(function(){
+								$scope.next();
+							},timer);
+						}
+						
+						//初始化自动播放
+						autoPlay();
+					}
+				}; 
+			});
+			
+			//link和compile 在指令中不允许同时使用link和compile
+			//link和controller你随便使用可以的
+			//link的参数是固定，不支持注入,controller是可以支持注入服务
+			//link是通过complie去延伸方法，pre和post 几乎不会被使用，而是通过compile的postLink方法就是link的封装
+			
+			//作业：
+			//你封装音乐播放器<music src="mp3/sdfs.mp3"></music>
+			//错误提示封装,<tip type='error'></tip> <tip type='warn'></tip> <tip type='success'></tip>
+		</script>
+		
+	</body>
+</html>

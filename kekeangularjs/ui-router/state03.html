@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+    <meta charset="UTF-8"/>
+  	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-ui-router.min.js"></script>
+</head>
+<body data-ng-app="myApp">
+	<a ui-sref="contacts({contactId:'Page1'})">联系我们Page1</a>
+	<a ui-sref="contacts({contactId:'Page2'})">联系我们Page2</a>
+	<a ui-sref="contacts({contactId:'contacts'})">联系我们</a>
+    <section ui-view></section>
+    <script type="text/javascript">
+    	//多视图：页面可以显示多个动态变化的不同区块
+    	var myApp = angular.module("myApp", ["ui.router"]);
+		myApp.config(function ($stateProvider, $urlRouterProvider) {
+		    $stateProvider.state('contacts', {
+		      url:"/contacts/{contactId}",	
+			  templateUrl: function ($stateParams){
+			    return 'template/' + $stateParams.contactId + '.html';
+			  }
+			});
+		});
+    </script>
+</body>
+<html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html ng-app>
+	<head>
+		<meta charset="UTF-8">
+		<title>Angularjs1.6入门-数据的双向绑定</title>
+		<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+	</head>
+	<body>
+		
+		<div ng-init="price=1;num=0">
+			<p>价格：<input type="text" ng-model="price"/></p>
+			<p>数量：<input type="text" ng-model="num"/></p>
+			<p>总价：{{price * num}}</p>
+		</div>
+		
+		
+		
+		<script type="text/javascript">
+			
+			/*
+			 * 数据绑定是Angularjs框架在视图与作用域之间的数据同步机制。所谓"双向"，是指视图界面中操作能够实时同步到作用域中，
+			 * 而作用域修改数据也能够实时同步到视图中。
+			 *
+			 * Angularjs中一个非常重要的指令：ng-model，该指令“只能”用在表单元素上。
+			 * 比如：
+			 * 
+			 * 
+			 * */
+			
+			
+			
+		</script>
+	</body>
+</html>
