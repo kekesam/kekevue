@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<script type="text/javascript">
+			
+			function Dog(){
+				this.cry = function(){
+					console.log("wang wang!!!");	
+				}
+			};
+			
+			function Cat(){
+				this.cry = function(){
+					console.log("miao miao....");
+				}
+			};
+			
+			
+			function Controller(dog ,cat){
+				this.run = function(){
+					dog.cry();
+					cat.cry();
+				}
+			};
+			
+			var map = {dog:new Dog(),cat:new Cat()};
+			
+			
+			function getFunctionParams(func){
+				//test boolean match 数组  search
+				var args = func.toString().match(/^function\s*[^\(]*\(\s*([^\)]*)\)*/im);
+				if(args && args.length>1){
+					return args[1].replace(/\s*/g,"").split(",");
+				}
+				return [];
+			};
+			
+			//参数解析出来
+			var paramsNames = getFunctionParams(Controller);
+			
+			//这个将要依赖的对象，
+			var depends = [];
+			for(var i in paramsNames){
+				depends[i] = map[paramsNames[i]];
+			};
+			
+			//注入apply,call
+			//Function.apply({},[]);
+			//Function.call({},p,p2);
+			//1:指向方法，2：改变函数中上下文的指向 3:给方法的传递具体的实参
+			
+			
+			/*var obj = {};
+			Controller.apply(obj,depends);
+			obj.run();*/
+
+
+
+			function Person(name){
+				this.name =name;
+				this.sayHello = function(){
+					console.log(this.name+"Hi"+this.age);
+				}
+			};
+			
+		
+			
+			
+			function Children(name){
+				//Person.call(this,name);
+				Person.apply(this,[name]);
+				this.age = 10;
+			};
+			
+			
+			//js因此
+			var children = new Children("keke");
+			children.sayHello();
+			
+			
+			var children2 = new Children("keke2");
+			children2.sayHello();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			 
+			 
+			 
+			
+		</script>
+	</body>
+</html>

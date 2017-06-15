@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="LoginController">
+			<h1>{{username}}1111{{message}}==={{url}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			
+			//provider factory,service,value,constant,decorator
+			
+			/*app.config(function($provide){
+				
+				$provide.provider("sayHello",function(){
+					
+				});
+			});*/
+			
+			
+			
+			app.provider("sayHello",function(){
+				this.$get = function(){
+					return {username:"keke",age:30};
+				}
+			});
+			
+			app.factory("factory",function(sayHello){
+				return function(){
+					return "ok Factory"+sayHello.username;
+				};
+			});
+			
+			
+			function Student(sayHello){
+				this.name  = "keke";
+				this.age = 20;
+				this.message = sayHello.username;
+			};
+			
+			app.service("service",Student);
+			
+			app.factory("student",function(sayHello){
+				return new Student(sayHello);
+			});
+			
+			//1:config无法注入value的服务
+			app.constant("url","http:/sdfsdfsdf");
+			app.value("username",{name:"xiaoer"});
+			app.constant("password",{name:"123456"});
+			
+			
+			//初始化注入config中的依赖,value是报错的，constant可以
+			/*app.config(function(username){
+				
+			}); //error代码*/
+			
+			//app.run(function(sayHello,factory,service,url,username){
+				//alert(2);
+			//});
+			
+			//config 不能注入factory,value,service,provider
+			/*app.config(function($provider){
+				
+			});*/
+			
+			//app.constant--config-服务(provider,service,factory)--run
+			//controller,filter,diretive.
+			
+			
+			app.config(function($provide){
+				
+				$provide.factory("keke",function(){
+					return "我的名字叫keke";
+				});
+				
+				$provide.service("kekeService",function(){
+					this.username="我的名字叫keke";
+				});
+				
+				$provide.decorator("student",function($stu){
+					$stu.address = "湖南长沙";
+					return $stu;
+				});
+			});
+			
+			/*app.run(function(username){
+				username.tip  ="ok";
+			});*/
+			
+			
+			
+			//隐式依赖,是不严格的定义方式，如果你在头部加上一个ng-strict-di 那么这种代码就报错,
+			app.controller("LoginController",function(kekeService,keke,$scope,url,password,username,sayHello,factory,service,student){
+				angular.extend(password,{name:"789754"});
+				angular.extend(username,{name:"zhangsan"});
+				$scope.username = keke+"==="+kekeService.username;
+				$scope.url = url+"\n"+username.name+"\n"+password.name;
+				$scope.message = sayHello.username+"=="+sayHello.age+"=="+factory()+"=="+service.name+"=="+service.age+"==="+student.name;
+			});
+			
+		</script>
+	</body>
+</html>

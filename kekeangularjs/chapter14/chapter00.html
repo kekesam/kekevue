@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="LoginController">
+			<h1>1111{{message}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			
+			
+			
+			function Validator(){
+				this.username = function(username){
+					if(!username){
+						return false;
+					}
+					return true;
+				}
+			};
+			
+			//app.service("validator",Validator); var validator = new Validator();
+			
+			//逻辑
+			app.controller("LoginController",function($scope,validator){
+				$scope.message = "ok";
+				var username = "";
+				var flag = validator.username(username);
+				console.log(flag);
+			});
+			
+		</script>
+	</body>
+</html>

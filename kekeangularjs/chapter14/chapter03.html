@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<script type="text/javascript">
+			
+			var Inject = {
+				depends :{},
+				//准备需要依赖的对象
+				put:function(key,object){
+					if(object.constructor == Function){
+						object = new object();
+					}
+					this.depends[key] = object; 
+				},
+				controller:function(func){
+					var obj = {};
+					var depends = this.resolveDepends(func);//把依赖注入的对象进行动态调用。
+					func.apply(obj,depends);
+					return obj;
+				},
+				//解析函数的参数名
+				getFunctionParams:function(func){
+					var args = func.toString().match(/^function\s*[^\(]*\(\s*([^\)]*)\)*/im);
+					if(args && args.length>1){
+						return args[1].replace(/\s*/g,"").split(",");
+					}
+					return [];
+				},
+				//依赖注入
+				resolveDepends:function(func){
+					//获取参数
+					var args = this.getFunctionParams(func);
+					var depends = [];
+					for (var i = 0; i < args.length; i++) {
+						depends.push(this.depends[args[i]]);
+					}
+					return depends;
+				}
+				
+			};
+			
+			
+			function Dog(){
+				this.cry = function(){
+					console.log("wang wang!!!");	
+				}
+			};
+			
+			function Cat(){
+				this.cry = function(){
+					console.log("miao miao....");
+				}
+			};
+			
+			
+			function Controller(dog ,cat){
+				this.run = function(){
+					dog.cry();
+					cat.cry();
+				}
+			};
+		
+			
+			
+			Inject.put("dog",Dog);
+			Inject.put("cat",Cat);
+			
+		
+			
+			//Inject.controller(Controller).run();
+			
+			Inject.controller(function(cat,dog){
+				cat.cry();
+				dog.cry();
+			});
+		</script>
+	</body>
+</html>

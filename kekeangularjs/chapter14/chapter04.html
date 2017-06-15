@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="LoginController">
+			<h1>1111{{message}}</h1>
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			
+			
+			//数组标注式注入
+			/*app.controller("LoginController",["$scope","$q","$log",function($s,$promise,$log,sdfsdf){
+				$s.message="Hello";
+			}]);*/
+			
+			//$inject注入
+			/*function LoginController($s,$promise){
+				$s.message = "Hello";
+			};
+			
+			LoginController.$inject = ["$scope","$q"];
+			app.controller("LoginController",LoginController);*/
+			
+			
+			//隐式依赖,是不严格的定义方式，如果你在头部加上一个ng-strict-di 那么这种代码就报错,
+			app.controller("LoginController",function($scope){
+				$scope.message = "ok";
+			});
+			
+		</script>
+	</body>
+</html>

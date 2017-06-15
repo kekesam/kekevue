@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/angular.min.js"></script>
+	</head>
+	<body>
+		
+		
+		<div ng-controller="LoginController">
+			{{message}}
+		</div>
+		
+		<script type="text/javascript">
+			var app = angular.module("myapp",[]);
+			/*app.factory("student",function(){
+				return {username:"keke",age:30};
+			}).controller("LoginController",function($scope,student){
+				$scope.message =student;
+			}).decorator("student",function($delegate){
+				$delegate.address="湖南长沙";
+				return $delegate;
+			});*/
+			
+			/*app.config(function($provide){
+				
+				$provide.factory("student",function(){
+					return {username:"keke",age:30};
+				});
+				
+				$provide.decorator("student",function($delegate){
+					$delegate.address="湖南长沙";
+					return $delegate;
+				});
+				
+			}).controller("LoginController",function($scope,student){
+				
+				$scope.message =student;
+			
+			});*/
+			
+			
+			/*app.config(function($provide){
+				$provide.factory("student",function(){
+					return {username:"keke",age:30};
+				});
+				
+				$provide.decorator("student",function($delegate){
+					$delegate.address="湖南长沙";
+					return $delegate;
+				});
+				
+			}).value("name","keke").controller("LoginController",function($scope,$injector){
+				var student = $injector.get("student");
+				var uname = $injector.get("name");
+				$scope.message =JSON.stringify(student)+"=="+uname;
+			});*/
+			
+			
+			app.config(function($provide){
+				$provide.factory("student",function(){
+					return {username:"keke",age:30};
+				});
+				
+				$provide.decorator("student",function($delegate){
+					$delegate.address="湖南长沙";
+					return $delegate;
+				});
+				
+			}).value("name","keke").controller("LoginController",function($scope){
+				var $injector = angular.injector(["ng","myapp"]);
+				var student = $injector.get("student");
+				var uname = $injector.get("name");
+				$scope.message =JSON.stringify(student)+"=="+uname;
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		<script type="text/javascript">
+			
+			function AppLog(){
+				this.startInfo = function(){
+					console.log("应用程序开始了....")
+				}
+			};
+			
+			
+			
+			function App(){
+				this.start = function(){
+					var log = new AppLog();	
+					log.startInfo();
+				}
+			};
+			
+			var app = new App();
+			app.start();
+			
+			 
+			 
+			 
+			
+		</script>
+	</body>
+</html>
